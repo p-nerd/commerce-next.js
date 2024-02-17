@@ -1,8 +1,7 @@
 "use client";
 
+import { StoreModel } from "@/components/modals/store-modal";
 import { useEffect, useState } from "react";
-
-import { StoreModel } from "@/components/models/store-model";
 
 const ModelProviders = () => {
     const [mounded, setMounded] = useState(false);

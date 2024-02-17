@@ -4,12 +4,14 @@ import { create } from "zustand";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import axios from "axios";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Model } from "@/components/ui2/model";
+import { Model } from "@/components/ui2/modal";
 
 export const useStoreModel = create<{
     open: boolean;
@@ -26,6 +28,8 @@ const schema = z.object({
 });
 
 export const StoreModel = () => {
+    const [loading, setLoading] = useState(false);
+
     const { open, setOpen } = useStoreModel();
 
     const form = useForm<z.infer<typeof schema>>({
@@ -36,7 +40,15 @@ export const StoreModel = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
-        console.log(values);
+        try {
+            setLoading(true);
+            const response = await axios.post("/api/stores", values);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -56,17 +68,27 @@ export const StoreModel = () => {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Tank Store" {...field} />
+                                        <Input
+                                            disabled={loading}
+                                            placeholder="Tank Store"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <div className="flex items-center justify-end space-x-2 pt-6">
-                            <Button variant="outline" onClick={() => setOpen(false)}>
+                            <Button
+                                disabled={loading}
+                                variant="outline"
+                                onClick={() => setOpen(false)}
+                            >
                                 Cancel
                             </Button>
-                            <Button type="submit">Continue</Button>
+                            <Button disabled={loading} type="submit">
+                                Continue
+                            </Button>
                         </div>
                     </form>
                 </Form>

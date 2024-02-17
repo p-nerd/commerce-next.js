@@ -1,6 +1,6 @@
 "use client";
 
-import { useStoreModel } from "@/components/models/store-model";
+import { useStoreModel } from "@/components/modals/store-modal";
 import { useEffect } from "react";
 
 const Home = () => {
