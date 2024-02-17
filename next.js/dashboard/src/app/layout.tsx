@@ -12,7 +12,7 @@ import { ModelProviders } from "@/providers/model-providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Commerce Admin Dashboard",
+    title: "Dashboard - Commerce",
 };
 
 const Layout = (p: Readonly<{ children: ReactNode }>) => {
