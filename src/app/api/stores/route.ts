@@ -22,8 +22,6 @@ export const POST = async (req: Request) => {
             },
         });
 
-        console.log(store);
-
         return NextResponse.json(store);
     } catch (error) {
         console.log("[STORES::POST]", error);

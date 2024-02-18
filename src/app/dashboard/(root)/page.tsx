@@ -12,7 +12,7 @@ const Home = () => {
         }
     }, [open, setOpen]);
 
-    return <div>Hello</div>;
+    return <></>;
 };
 
 export default Home;

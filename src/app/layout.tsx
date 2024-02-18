@@ -5,10 +5,10 @@ import type { ReactNode } from "react";
 
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "react-hot-toast";
 import { dark } from "@clerk/themes";
 
 import { ModelProviders } from "@/providers/modals-provider";
-import { prisma } from "@/lib/prisma";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 };
 
 const Layout = (p: Readonly<{ children: ReactNode }>) => {
-    const x = prisma().store.findFirst();
     return (
         <ClerkProvider appearance={{ baseTheme: dark }}>
             <html lang="en" className="dark">
                 <body className={inter.className}>
                     <ModelProviders />
                     {p.children}
+                    <Toaster position="top-right" />
                 </body>
             </html>
         </ClerkProvider>

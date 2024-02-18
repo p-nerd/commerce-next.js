@@ -5,7 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
+import { toast } from "react-hot-toast";
+import { ajax } from "@/lib/ajax";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
@@ -42,10 +43,10 @@ export const StoreModel = () => {
     const onSubmit = async (values: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            const response = await axios.post("/api/stores", values);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
+            const response = await ajax.post("/api/stores", values);
+            window.location.assign(`/dashboard/${response.data.id}`);
+        } catch (error: any) {
+            toast.error(error?.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
