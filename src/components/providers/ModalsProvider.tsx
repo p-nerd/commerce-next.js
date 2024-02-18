@@ -1,9 +1,9 @@
 "use client";
 
-import { StoreModel } from "@/components/modals/store-modal";
+import { StoreModal } from "@/components/modals/store-modal";
 import { useEffect, useState } from "react";
 
-const ModelProviders = () => {
+const ModalsProvider = () => {
     const [mounded, setMounded] = useState(false);
 
     useEffect(() => {
@@ -16,9 +16,9 @@ const ModelProviders = () => {
 
     return (
         <>
-            <StoreModel />
+            <StoreModal />
         </>
     );
 };
 
-export { ModelProviders };
+export default ModalsProvider;

@@ -1,10 +1,11 @@
-import { Heading } from "@/components/ui2/heading";
 import { Separator } from "@/components/ui/separator";
+
+import Heading from "@/components/ui2/Heading";
 
 import UpdateFrom from "./UpdateFrom";
 import DeleteStore from "./DeleteStore";
 
-import stores from "@/tables/stores";
+import stores from "@/models/stores";
 
 const Settings = async (p: { params: { storeId: string } }) => {
     const store = await stores.find(p.params.storeId);

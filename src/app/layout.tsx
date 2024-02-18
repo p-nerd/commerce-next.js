@@ -8,7 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import { dark } from "@clerk/themes";
 
-import { ModelProviders } from "@/providers/modals-provider";
+import ModalsProvider from "@/components/providers/ModalsProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ const Layout = (p: Readonly<{ children: ReactNode }>) => {
         <ClerkProvider appearance={{ baseTheme: dark }}>
             <html lang="en" className="dark">
                 <body className={inter.className}>
-                    <ModelProviders />
+                    <ModalsProvider />
                     {p.children}
                     <Toaster position="top-right" />
                 </body>

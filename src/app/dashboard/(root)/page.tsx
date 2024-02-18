@@ -1,10 +1,10 @@
 "use client";
 
-import { useStoreModel } from "@/components/modals/store-modal";
+import { useStoreModal } from "@/components/modals/store-modal";
 import { useEffect } from "react";
 
 const Home = () => {
-    const { open, setOpen } = useStoreModel();
+    const { open, setOpen } = useStoreModal();
 
     useEffect(() => {
         if (!open) {

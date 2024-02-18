@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useParams, useRouter } from "next/navigation";
-import { useStoreModel } from "@/components/modals/store-modal";
+import { useStoreModal } from "@/components/modals/store-modal";
 import { useState } from "react";
 
 import { Check, ChevronsUpDown, PlusCircle, StoreIcon } from "lucide-react";
@@ -15,7 +15,7 @@ import { Store } from "@prisma/client";
 const StoreSwitcher = (p: { stores: Store[] }) => {
     const params = useParams();
     const router = useRouter();
-    const storeModal = useStoreModel();
+    const storeModal = useStoreModal();
 
     const [open, setOpen] = useState(false);
 

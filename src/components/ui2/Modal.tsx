@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 
-const Model = (p: {
+const Modal = (p: {
     title: string;
     description: string;
     open: boolean;
@@ -37,4 +37,4 @@ const Model = (p: {
     );
 };
 
-export { Model };
+export default Modal;

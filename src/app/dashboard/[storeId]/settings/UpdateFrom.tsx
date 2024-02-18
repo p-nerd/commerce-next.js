@@ -1,6 +1,6 @@
 "use client";
 
-import type { TStore } from "@/tables/stores";
+import type { TStore } from "@/models/stores";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

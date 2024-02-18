@@ -12,9 +12,10 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Model } from "@/components/ui2/modal";
 
-export const useStoreModel = create<{
+import Modal from "@/components/ui2/Modal";
+
+export const useStoreModal = create<{
     open: boolean;
     setOpen: (open: boolean) => void;
 }>(set => ({
@@ -28,10 +29,10 @@ const schema = z.object({
     name: z.string().min(1),
 });
 
-export const StoreModel = () => {
+export const StoreModal = () => {
     const [loading, setLoading] = useState(false);
 
-    const { open, setOpen } = useStoreModel();
+    const { open, setOpen } = useStoreModal();
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -53,7 +54,7 @@ export const StoreModel = () => {
     };
 
     return (
-        <Model
+        <Modal
             open={open}
             title="Create Store"
             description="Add new store to manage products and categories"
@@ -94,6 +95,6 @@ export const StoreModel = () => {
                     </form>
                 </Form>
             </div>
-        </Model>
+        </Modal>
     );
 };
