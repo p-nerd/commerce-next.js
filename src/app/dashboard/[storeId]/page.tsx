@@ -1,13 +1,8 @@
-import { prisma } from "@/lib/prisma";
+import store from "@/tables/stores";
 
 const StorePage = async (p: { params: { storeId: string } }) => {
-    const store = await prisma().store.findFirst({
-        where: {
-            id: p.params.storeId,
-        },
-    });
-
-    return <div>Active Store: {store?.name}</div>;
+    const storeItem = await store.find(p.params.storeId);
+    return <div>Active Store: {storeItem.name}</div>;
 };
 
 export default StorePage;

@@ -1,14 +1,11 @@
 import { type ReactNode } from "react";
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
+import { loggedUserId } from "@/helpers/auth";
 
 const SetupLayout = async (p: { children: ReactNode }) => {
-    const { userId } = auth();
-    if (!userId) {
-        redirect("/sign-in");
-    }
+    const userId = loggedUserId();
     const store = await prisma().store.findFirst({
         where: {
             userId,
