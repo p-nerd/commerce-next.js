@@ -9,7 +9,8 @@
         "lint": "next lint",
         "format": "prettier --write ./src",
         "shadcn-ui": "shadcn-ui",
-        "prisma": "prisma"
+        "prisma": "prisma",
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@clerk/nextjs": "^4.29.7",
