@@ -10,5 +10,3 @@ export const loggedUserId = (): string => {
 
     return userId;
 };
-
-export const authenticatedUserId = () => { };

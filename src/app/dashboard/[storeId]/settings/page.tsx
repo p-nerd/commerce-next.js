@@ -13,7 +13,7 @@ const Settings = async (p: { params: { storeId: string } }) => {
             <div className="flex-1 space-y-4 p-8 pt-6">
                 <div className="flex items-center justify-between">
                     <Heading title="Settings" description="Manage store settings" />
-                    <DeleteStore />
+                    <DeleteStore storeId={store.id} />
                 </div>
                 <Separator />
                 <UpdateFrom store={store} />

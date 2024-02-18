@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
     try {
@@ -49,22 +49,22 @@ export const PATCH = async (req: Request) => {
     }
 };
 
-export const DELETE = async (req: Request) => {
+export const DELETE = async (req: NextRequest) => {
     try {
         const { userId } = auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        const body = await req.json();
-        const { id } = body;
+        const searchParams = req.nextUrl.searchParams;
+        const id = searchParams.get("id");
         if (!id) {
             return new NextResponse("Id is required", { status: 400 });
         }
 
         await prisma().store.delete({ where: { id } });
 
-        return;
+        return NextResponse.json({ id: "store deleted" });
     } catch (error) {
         console.log("[STORES::DELETE]", error);
         return new NextResponse("Internal error", { status: 500 });
