@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import AlertDialog from "@/components/ui2/AlertDialog";
+import AlertDialog from "@/components/togather/AlertDialog";
 
 const DeleteStore = (p: { storeId: string }) => {
     const router = useRouter();

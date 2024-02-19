@@ -1,11 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 
-import Heading from "@/components/ui2/Heading";
+import Heading from "@/components/togather/Heading";
 
 import UpdateFrom from "./UpdateFrom";
 import DeleteStore from "./DeleteStore";
 
 import stores from "@/models/stores";
+import APIAlert from "@/components/screens/APIAlert";
 
 const Settings = async (p: { params: { storeId: string } }) => {
     const store = await stores.find(p.params.storeId);
@@ -18,6 +19,7 @@ const Settings = async (p: { params: { storeId: string } }) => {
                 </div>
                 <Separator />
                 <UpdateFrom store={store} />
+                <APIAlert title="text" code="hello" />
             </div>
         </div>
     );
