@@ -4,12 +4,13 @@ import Heading from "@/components/togather/Heading";
 
 import UpdateFrom from "./UpdateFrom";
 import DeleteStore from "./DeleteStore";
+import APIKeys from "./APIKeys";
 
 import stores from "@/models/stores";
-import APIAlert from "@/components/screens/APIAlert";
 
 const Settings = async (p: { params: { storeId: string } }) => {
     const store = await stores.find(p.params.storeId);
+
     return (
         <div className="flex flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
@@ -19,7 +20,7 @@ const Settings = async (p: { params: { storeId: string } }) => {
                 </div>
                 <Separator />
                 <UpdateFrom store={store} />
-                <APIAlert title="text" code="hello" />
+                <APIKeys storeId={store.id} />
             </div>
         </div>
     );

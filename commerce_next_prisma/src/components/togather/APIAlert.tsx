@@ -1,7 +1,7 @@
-import { Code, Server } from "lucide-react";
+import { Copy as CopyIcon, Server } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import Copy from "@/components/togather/Copy";
 
 const APIAlert = ({
     variant = "public",
@@ -9,7 +9,7 @@ const APIAlert = ({
 }: {
     title: string;
     code: string;
-    variant?: "public" | "admin";
+    variant: "public" | "admin";
 }) => {
     return (
         <Alert>
@@ -27,9 +27,9 @@ const APIAlert = ({
                 <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
                     {p.code}
                 </code>
-                <Button variant="outline" size="icon" onClick={() => {}}>
-                    <Code />
-                </Button>
+                <Copy text={p.code} toast="API Route copied to the clipboard.">
+                    <CopyIcon />
+                </Copy>
             </AlertDescription>
         </Alert>
     );
