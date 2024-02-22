@@ -1,3 +1,3 @@
 # commerce
 
-E-commerce web a with different technologies.
+E-commerce web app a with next.js
