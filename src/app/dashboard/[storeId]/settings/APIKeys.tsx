@@ -1,6 +1,6 @@
 "use client";
 
-import APIAlert from "@/components/togather/APIAlert";
+import APIAlert from "@/components/together/APIAlert";
 import useOrigin from "@/hooks/useOrigin";
 
 const APIKeys = (p: { storeId: string }) => {

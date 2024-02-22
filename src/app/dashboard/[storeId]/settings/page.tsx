@@ -1,12 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 
-import Heading from "@/components/togather/Heading";
+import Heading from "@/components/together/Heading";
 
 import UpdateFrom from "./UpdateFrom";
 import DeleteStore from "./DeleteStore";
 import APIKeys from "./APIKeys";
 
-import stores from "@/models/stores";
+import stores from "@/collections/stores";
 
 const Settings = async (p: { params: { storeId: string } }) => {
     const store = await stores.find(p.params.storeId);

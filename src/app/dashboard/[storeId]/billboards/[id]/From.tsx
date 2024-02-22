@@ -1,6 +1,6 @@
 "use client";
 
-import type { TStore } from "@/collections/stores";
+import type { TBillboard } from "@/collections/billboards";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,26 +16,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const schema = z.object({
-    name: z.string().min(1),
+    label: z.string().min(1),
 });
 
-const UpdateFrom = (p: { store: TStore }) => {
+const From = (p: { billboard: TBillboard | null }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
-        defaultValues: {
-            name: p.store.name,
-        },
+        defaultValues: { label: p.billboard?.label },
     });
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            await ajax.patch("/api/stores", { ...values, id: p.store.id });
+            if (p.billboard) {
+                await ajax.patch(`/api/billboards?id=${p.billboard.id}`, values);
+            } else {
+                await ajax.post(`/api/billboards`, values);
+            }
             router.refresh();
-            toast.success("Store updated");
+            toast.success("Billboard updated");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");
         } finally {
@@ -49,12 +51,16 @@ const UpdateFrom = (p: { store: TStore }) => {
                 <div className="grid grid-cols-3 gap-8">
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="label"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input disabled={loading} placeholder="Tank Store" {...field} />
+                                    <Input
+                                        disabled={loading}
+                                        placeholder="Billboard Label"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -69,4 +75,4 @@ const UpdateFrom = (p: { store: TStore }) => {
     );
 };
 
-export default UpdateFrom;
+export default From;

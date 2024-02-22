@@ -16,7 +16,10 @@ const MainNav = (p: HTMLAttributes<HTMLElement>) => {
             href: `/dashboard/${params.storeId}`,
             label: "Overview",
         },
-
+        {
+            href: `/dashboard/${params.storeId}/billboards`,
+            label: "Billboards",
+        },
         {
             href: `/dashboard/${params.storeId}/settings`,
             label: "Settings",

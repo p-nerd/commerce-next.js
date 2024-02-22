@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import stores from "@/models/stores";
+import stores from "@/collections/stores";
 import Navbar from "./Navbar";
 
 const DashboardLayout = async (p: { children: ReactNode; params: { storeId: string } }) => {

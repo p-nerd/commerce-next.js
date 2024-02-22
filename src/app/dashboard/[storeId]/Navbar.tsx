@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 
-import stores from "@/models/stores";
+import stores from "@/collections/stores";
 import StoreSwitcher from "./StoreSwitcher";
 import MainNav from "./MainNav";
 

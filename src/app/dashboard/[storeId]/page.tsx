@@ -1,4 +1,4 @@
-import store from "@/models/stores";
+import store from "@/collections/stores";
 
 const StorePage = async (p: { params: { storeId: string } }) => {
     const storeItem = await store.find(p.params.storeId);
