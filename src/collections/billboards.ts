@@ -3,17 +3,13 @@ import { Billboard } from "@prisma/client";
 
 export type TBillboard = Billboard;
 
-const find = async (billboardId: string): Promise<TBillboard | null> => {
-    const billboard = await prisma().billboard.findFirst({
-        where: {
-            id: billboardId,
-        },
-    });
-    return billboard;
-};
-
 const billboards = {
-    find,
+    find: async (id: string): Promise<TBillboard | null> => {
+        return await prisma().billboard.findFirst({ where: { id } });
+    },
+    finds: async (storeId: string): Promise<TBillboard[]> => {
+        return await prisma().billboard.findMany({ where: { storeId } });
+    },
 };
 
 export default billboards;

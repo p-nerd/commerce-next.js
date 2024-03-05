@@ -5,29 +5,19 @@ import { redirect } from "next/navigation";
 
 export type TStore = Store;
 
-const find = async (storeId: string): Promise<Store> => {
-    const userId = loggedUserId();
-    const store = await prisma().store.findFirst({
-        where: {
-            id: storeId,
-            userId,
-        },
-    });
-    if (!store) {
-        redirect("/dashboard");
-    }
-    return store;
-};
-
-const finds = async (): Promise<Store[]> => {
-    const userId = loggedUserId();
-    const stores = await prisma().store.findMany({ where: { userId } });
-    return stores;
-};
-
 const stores = {
-    find,
-    finds,
+    find: async (id: string): Promise<Store> => {
+        const userId = loggedUserId();
+        const store = await prisma().store.findFirst({ where: { id, userId } });
+        if (!store) {
+            redirect("/dashboard");
+        }
+        return store;
+    },
+    finds: async (): Promise<Store[]> => {
+        const userId = loggedUserId();
+        return await prisma().store.findMany({ where: { userId } });
+    },
 };
 
 export default stores;
