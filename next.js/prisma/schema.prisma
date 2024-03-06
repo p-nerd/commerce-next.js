@@ -14,8 +14,6 @@ model Store {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  billboards Billboard[] @relation("StoreToBillboard")
 }
 
 model Billboard {
@@ -25,8 +23,4 @@ model Billboard {
   imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  store Store @relation("StoreToBillboard", fields: [storeId], references: [id])
-
-  @@index([storeId])
 }

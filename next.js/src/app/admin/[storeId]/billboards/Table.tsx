@@ -2,9 +2,11 @@
 
 import type { TBillboard } from "@/collections/billboards";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { Table as TanStackTable } from "@tanstack/react-table";
 
 import { Table as UITable, TableBody, TableCell } from "@/components/ui/table";
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 import time from "@/helpers/time";
@@ -20,8 +22,7 @@ const columns: ColumnDef<TBillboard>[] = [
     },
 ];
 
-const Table = ({ billboards }: { billboards: TBillboard[] }) => {
-    const table = useReactTable({ data: billboards, columns, getCoreRowModel: getCoreRowModel() });
+const DataTable = ({ table }: { table: TanStackTable<TBillboard> }) => {
     return (
         <div className="rounded-md border">
             <UITable>
@@ -63,6 +64,39 @@ const Table = ({ billboards }: { billboards: TBillboard[] }) => {
                     )}
                 </TableBody>
             </UITable>
+        </div>
+    );
+};
+
+const Pagination = ({ table }: { table: TanStackTable<TBillboard> }) => {
+    return (
+        <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+            >
+                Previous
+            </Button>
+            <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+            >
+                Next
+            </Button>
+        </div>
+    );
+};
+
+const Table = ({ billboards }: { billboards: TBillboard[] }) => {
+    const table = useReactTable({ data: billboards, columns, getCoreRowModel: getCoreRowModel() });
+    return (
+        <div>
+            <DataTable table={table} />
+            <Pagination table={table} />
         </div>
     );
 };
