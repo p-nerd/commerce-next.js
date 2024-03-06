@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 import AlertDialog from "@/components/together/AlertDialog";
 
-const DeleteStore = (p: { storeId: string }) => {
+const Delete = (p: { billboardId: string; storeId: string }) => {
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
@@ -19,8 +19,8 @@ const DeleteStore = (p: { storeId: string }) => {
     const handleDelete = async () => {
         try {
             setLoading(true);
-            await ajax.delete(`/api/stores?id=${p.storeId}`);
-            router.push("/dashboard");
+            await ajax.delete(`/api/${p.storeId}/billboards?id=${p.billboardId}`);
+            router.push(`/admin/${p.storeId}/billboards`);
             toast.success("Store deleted");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");
@@ -33,7 +33,7 @@ const DeleteStore = (p: { storeId: string }) => {
     return (
         <>
             <AlertDialog
-                description="This action cannot be undone. This will permanently delete this store."
+                description="This action cannot be undone. This will permanently delete this billboard."
                 open={open}
                 onCancel={() => setOpen(false)}
                 onConfirm={handleDelete}
@@ -51,4 +51,4 @@ const DeleteStore = (p: { storeId: string }) => {
     );
 };
 
-export default DeleteStore;
+export default Delete;

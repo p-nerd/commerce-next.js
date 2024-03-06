@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import stores from "@/collections/stores";
 import Navbar from "./Navbar";
 
-const DashboardLayout = async (p: { children: ReactNode; params: { storeId: string } }) => {
+const adminLayout = async (p: { children: ReactNode; params: { storeId: string } }) => {
     await stores.find(p.params.storeId);
     return (
         <>
@@ -13,4 +13,4 @@ const DashboardLayout = async (p: { children: ReactNode; params: { storeId: stri
     );
 };
 
-export default DashboardLayout;
+export default adminLayout;

@@ -12,7 +12,7 @@ const SetupLayout = async (p: { children: ReactNode }) => {
         },
     });
     if (store) {
-        redirect(`/dashboard/${store.id}`);
+        redirect(`/admin/${store.id}`);
     }
     return <>{p.children}</>;
 };

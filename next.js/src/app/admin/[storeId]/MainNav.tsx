@@ -13,15 +13,15 @@ const MainNav = (p: HTMLAttributes<HTMLElement>) => {
 
     const routes = [
         {
-            href: `/dashboard/${params.storeId}`,
+            href: `/admin/${params.storeId}`,
             label: "Overview",
         },
         {
-            href: `/dashboard/${params.storeId}/billboards`,
+            href: `/admin/${params.storeId}/billboards`,
             label: "Billboards",
         },
         {
-            href: `/dashboard/${params.storeId}/settings`,
+            href: `/admin/${params.storeId}/settings`,
             label: "Settings",
         },
     ];

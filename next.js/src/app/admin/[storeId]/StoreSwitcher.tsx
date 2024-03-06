@@ -49,7 +49,7 @@ const StoreSwitcher = (p: { stores: Store[] }) => {
                                     value={store.id}
                                     onSelect={() => {
                                         setOpen(false);
-                                        router.push(`/dashboard/${store.id}`);
+                                        router.push(`/admin/${store.id}`);
                                     }}
                                     className="text-sm"
                                 >

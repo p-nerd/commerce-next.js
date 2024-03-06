@@ -13,7 +13,7 @@ import ModalsProvider from "@/components/providers/ModalsProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Dashboard - Commerce",
+    title: "admin - Commerce",
 };
 
 const Layout = (p: Readonly<{ children: ReactNode }>) => {

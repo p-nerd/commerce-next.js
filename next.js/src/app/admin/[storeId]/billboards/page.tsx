@@ -18,7 +18,7 @@ const Billboards = async (p: { params: { storeId: string } }) => {
                     description="Manage billboards for your store"
                 />
                 <Link
-                    href={`/dashboard/${p.params.storeId}/billboards/new`}
+                    href={`/admin/${p.params.storeId}/billboards/new`}
                     className={buttonVariants()}
                 >
                     <Plus className="mr-2 h-4 w-4" />
