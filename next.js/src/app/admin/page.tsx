@@ -1,5 +1,5 @@
-const Admin = async () => {
-    return <div>Active Store</div>;
+const Overview = async () => {
+    return <div>Overview</div>;
 };
 
-export default Admin;
+export default Overview;

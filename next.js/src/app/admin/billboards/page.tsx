@@ -10,7 +10,7 @@ import Table from "./Table";
 const Billboards = async () => {
     const billboardsList = await billboards.finds();
     return (
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <>
             <div className="flex items-center justify-between">
                 <Heading
                     title={`Billboards (${billboardsList.length})`}
@@ -23,7 +23,7 @@ const Billboards = async () => {
             </div>
             <Separator />
             <Table billboards={billboardsList} />
-        </div>
+        </>
     );
 };
 

@@ -30,7 +30,7 @@ const Layout = async (p: { children: ReactNode }) => {
                     </div>
                 </div>
             </div>
-            {p.children}
+            <div className="flex-1 space-y-4 p-8 pt-6">{p.children}</div>
         </>
     );
 };
