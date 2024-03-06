@@ -3,11 +3,11 @@
 import APIAlert from "@/components/together/APIAlert";
 import useOrigin from "@/hooks/useOrigin";
 
-const APIKeys = (p: { storeId: string }) => {
+const APIKeys = () => {
     const origin = useOrigin();
     return (
         <div>
-            <APIAlert title="API_URL" code={`${origin}/${p.storeId}`} variant="public" />
+            <APIAlert title="API_URL" code={`${origin}`} variant="public" />
         </div>
     );
 };

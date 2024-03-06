@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
-import stores, { TStore } from "@/collections/stores";
+import stores from "@/collections/stores";
 
 export const PATCH = async (request: NextRequest) => {
     try {
@@ -15,12 +15,10 @@ export const PATCH = async (request: NextRequest) => {
             return new NextResponse("Name is required", { status: 400 });
         }
 
-        const storesList = await stores.finds();
-        const store: TStore = await (storesList?.length >= 1
-            ? stores.update(storesList[0].id, name)
-            : stores.create(name));
+        const store = await stores.findFirstOne();
+        const updatedStore = await stores.update(store.id, name);
 
-        return NextResponse.json(store);
+        return NextResponse.json(updatedStore);
     } catch (error) {
         console.log("[STORES::PATCH]", error);
         return new NextResponse("Internal error", { status: 500 });
