@@ -6,7 +6,7 @@ import Heading from "@/components/together/Heading";
 import From from "./From";
 import Delete from "./Delete";
 
-const Billboard = async (p: { params: { id: string; storeId: string } }) => {
+const Billboard = async (p: { params: { id: string } }) => {
     const billboard = await billboards.find(p.params.id);
 
     return (
@@ -16,10 +16,10 @@ const Billboard = async (p: { params: { id: string; storeId: string } }) => {
                     title={billboard ? "Edit Billboard" : "Create Billboard"}
                     description={billboard ? "Edit a existing billboard" : "Create a new billboard"}
                 />
-                {!!billboard && <Delete billboardId={billboard.id} storeId={p.params.storeId} />}
+                {!!billboard && <Delete billboardId={billboard.id} />}
             </div>
             <Separator />
-            <From billboard={billboard} storeId={p.params.storeId} />
+            <From billboard={billboard} />
         </div>
     );
 };

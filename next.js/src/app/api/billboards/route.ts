@@ -2,24 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 
-import stores from "@/collections/stores";
-
-export const POST = async (
-    req: NextRequest,
-    { params: { storeId } }: { params: { storeId: string } },
-) => {
+export const POST = async (req: NextRequest) => {
     try {
         const { userId } = auth();
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 });
-        }
-
-        if (!storeId) {
-            return new NextResponse("StoreId is required", { status: 400 });
-        }
-        const store = stores.find(storeId);
-        if (!store) {
-            return new NextResponse("Unauthorized", { status: 403 });
         }
 
         const { label, imageUrl } = (await req.json()) as { label: string; imageUrl: string };
@@ -30,7 +17,7 @@ export const POST = async (
             return new NextResponse("ImageUrl is required", { status: 400 });
         }
 
-        const billboard = await prisma().billboard.create({ data: { label, imageUrl, storeId } });
+        const billboard = await prisma().billboard.create({ data: { label, imageUrl } });
         return NextResponse.json(billboard);
     } catch (e: any) {
         console.log("[BILLBOARDS::POST]", e);

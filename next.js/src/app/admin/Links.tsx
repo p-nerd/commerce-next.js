@@ -3,25 +3,24 @@
 import type { HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 
-const MainNav = (p: HTMLAttributes<HTMLElement>) => {
-    const params = useParams();
+const Links = (p: HTMLAttributes<HTMLElement>) => {
     const pathname = usePathname();
 
     const routes = [
         {
-            href: `/admin/${params.storeId}`,
+            href: `/admin`,
             label: "Overview",
         },
         {
-            href: `/admin/${params.storeId}/billboards`,
+            href: `/admin/billboards`,
             label: "Billboards",
         },
         {
-            href: `/admin/${params.storeId}/settings`,
+            href: `/admin/settings`,
             label: "Settings",
         },
     ];
@@ -46,4 +45,4 @@ const MainNav = (p: HTMLAttributes<HTMLElement>) => {
     );
 };
 
-export default MainNav;
+export default Links;

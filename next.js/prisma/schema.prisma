@@ -18,7 +18,6 @@ model Store {
 
 model Billboard {
   id        String   @id @default(uuid())
-  storeId   String
   label     String
   imageUrl  String
   createdAt DateTime @default(now())

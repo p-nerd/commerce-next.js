@@ -7,7 +7,7 @@ const billboards = {
     find: async (id: string): Promise<TBillboard | null> => {
         return await prisma().billboard.findFirst({ where: { id } });
     },
-    finds: async (storeId: string): Promise<TBillboard[]> => {
+    finds: async (): Promise<TBillboard[]> => {
         return await prisma().billboard.findMany();
     },
 };

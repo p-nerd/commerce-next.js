@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import ImageUpload from "@/components/ui2/ImageUpload";
 
 const schema = z.object({
@@ -20,7 +21,7 @@ const schema = z.object({
     imageUrl: z.string().min(1),
 });
 
-const From = (p: { billboard: TBillboard | null; storeId: string }) => {
+const From = (p: { billboard: TBillboard | null }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -33,11 +34,11 @@ const From = (p: { billboard: TBillboard | null; storeId: string }) => {
         try {
             setLoading(true);
             if (p.billboard) {
-                await ajax.patch(`/api/${p.storeId}/billboards?id=${p.billboard.id}`, values);
+                await ajax.patch(`/api/billboards?id=${p.billboard.id}`, values);
             } else {
-                await ajax.post(`/api/${p.storeId}/billboards`, values);
+                await ajax.post(`/api/billboards`, values);
             }
-            router.push(`/admin/${p.storeId}/billboards`);
+            router.push(`/admin/billboards`);
             toast.success(p.billboard ? "Billboard updated" : "Billboard created");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");

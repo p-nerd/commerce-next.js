@@ -19,7 +19,7 @@ const schema = z.object({
     name: z.string().min(1),
 });
 
-const UpdateFrom = (p: { store: TStore }) => {
+const From = (p: { store: TStore }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -69,4 +69,4 @@ const UpdateFrom = (p: { store: TStore }) => {
     );
 };
 
-export default UpdateFrom;
+export default From;

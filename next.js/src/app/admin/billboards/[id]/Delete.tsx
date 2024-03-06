@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 import AlertDialog from "@/components/together/AlertDialog";
 
-const Delete = (p: { billboardId: string; storeId: string }) => {
+const Delete = (p: { billboardId: string }) => {
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
@@ -19,8 +19,8 @@ const Delete = (p: { billboardId: string; storeId: string }) => {
     const handleDelete = async () => {
         try {
             setLoading(true);
-            await ajax.delete(`/api/${p.storeId}/billboards?id=${p.billboardId}`);
-            router.push(`/admin/${p.storeId}/billboards`);
+            await ajax.delete(`/api/billboards?id=${p.billboardId}`);
+            router.push(`/admin/billboards`);
             toast.success("Store deleted");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");
