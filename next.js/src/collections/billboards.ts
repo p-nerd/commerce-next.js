@@ -1,5 +1,5 @@
+import type { Billboard } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { Billboard } from "@prisma/client";
 
 export type TBillboard = Billboard;
 

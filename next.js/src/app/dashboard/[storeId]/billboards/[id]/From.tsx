@@ -37,7 +37,7 @@ const From = (p: { billboard: TBillboard | null; storeId: string }) => {
             } else {
                 await ajax.post(`/api/${p.storeId}/billboards`, values);
             }
-            router.refresh();
+            router.push(`/dashboard/${p.storeId}/billboards`);
             toast.success(p.billboard ? "Billboard updated" : "Billboard created");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");

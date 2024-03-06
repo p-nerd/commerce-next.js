@@ -1,7 +1,8 @@
-import { loggedUserId } from "@/helpers/auth";
-import { prisma } from "@/lib/prisma";
-import { Store } from "@prisma/client";
+import type { Store } from "@prisma/client";
+
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { loggedUserId } from "@/helpers/auth";
 
 export type TStore = Store;
 

@@ -1,89 +1,91 @@
-import stores from "@/collections/stores";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
-import { NextRequest, NextResponse } from "next/server";
+
+import stores from "@/collections/stores";
 
 export const POST = async (
-    req: Request,
-    { params }: { params: { id: string; storeId: string } },
+    req: NextRequest,
+    { params: { storeId } }: { params: { storeId: string } },
 ) => {
     try {
         const { userId } = auth();
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 });
         }
-        if (!params.storeId) {
+
+        if (!storeId) {
             return new NextResponse("StoreId is required", { status: 400 });
         }
-
-        const body = (await req.json()) as { label: string; imageUrl: string };
-
-        if (!body.label) {
-            return new NextResponse("Label is required", { status: 400 });
-        }
-        if (!body.imageUrl) {
-            return new NextResponse("ImageUrl is required", { status: 400 });
-        }
-
-        const store = stores.find(params.storeId);
+        const store = stores.find(storeId);
         if (!store) {
             return new NextResponse("Unauthorized", { status: 403 });
         }
 
-        const billboard = await prisma().billboard.create({
-            data: { ...body, storeId: params.storeId },
-        });
+        const { label, imageUrl } = (await req.json()) as { label: string; imageUrl: string };
+        if (!label) {
+            return new NextResponse("Label is required", { status: 400 });
+        }
+        if (!imageUrl) {
+            return new NextResponse("ImageUrl is required", { status: 400 });
+        }
 
+        const billboard = await prisma().billboard.create({ data: { label, imageUrl, storeId } });
         return NextResponse.json(billboard);
-    } catch (error) {
-        console.log("[BILLBOARDS::POST]", error);
-        return new NextResponse("Internal error", { status: 500 });
+    } catch (e: any) {
+        console.log("[BILLBOARDS::POST]", e);
+        return new NextResponse(e?.message || "Internal error", { status: 500 });
     }
 };
 
-export const PATCH = async (req: Request) => {
+export const PATCH = async (request: NextRequest) => {
     try {
         const { userId } = auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return new NextResponse("Unauthenticated", { status: 401 });
         }
 
-        const body = await req.json();
-        const { name, id } = body;
-        if (!name) {
-            return new NextResponse("Name is required", { status: 400 });
-        }
-        if (!id) {
-            return new NextResponse("Id is required", { status: 400 });
+        const billboardId = request.nextUrl.searchParams.get("id") as string;
+        if (!billboardId) {
+            return new NextResponse("id param is required", { status: 400 });
         }
 
-        const store = await prisma().store.update({ where: { id }, data: { name } });
+        const { label, imageUrl } = (await request.json()) as { label: string; imageUrl: string };
+        if (!label) {
+            return new NextResponse("Label is required", { status: 400 });
+        }
+        if (!imageUrl) {
+            return new NextResponse("ImageUrl is required", { status: 400 });
+        }
 
-        return NextResponse.json(store);
-    } catch (error) {
-        console.log("[STORES::PATCH]", error);
-        return new NextResponse("Internal error", { status: 500 });
+        const billboard = await prisma().billboard.update({
+            where: { id: billboardId },
+            data: { label, imageUrl },
+        });
+        return NextResponse.json(billboard);
+    } catch (e: any) {
+        console.log("[BILLBOARDS::PATCH]", e);
+        return new NextResponse(e?.message || "Internal error", { status: 500 });
     }
 };
 
-export const DELETE = async (req: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
     try {
         const { userId } = auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return new NextResponse("Unauthenticated", { status: 401 });
         }
 
-        const searchParams = req.nextUrl.searchParams;
-        const id = searchParams.get("id");
-        if (!id) {
-            return new NextResponse("Id is required", { status: 400 });
+        const billboardId = request.nextUrl.searchParams.get("id") as string;
+        if (!billboardId) {
+            return new NextResponse("id param is required", { status: 400 });
         }
 
-        await prisma().store.delete({ where: { id } });
+        await prisma().billboard.delete({ where: { id: billboardId } });
 
-        return NextResponse.json({ id: "store deleted" });
-    } catch (error) {
-        console.log("[STORES::DELETE]", error);
-        return new NextResponse("Internal error", { status: 500 });
+        return NextResponse.json({ id: "billboard deleted" });
+    } catch (e: any) {
+        console.log("[BILLBOARDS::DELETE]", e);
+        return new NextResponse(e?.message || "Internal error", { status: 500 });
     }
 };

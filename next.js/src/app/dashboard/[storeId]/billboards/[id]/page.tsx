@@ -1,6 +1,7 @@
+import { Separator } from "@/components/ui/separator";
+
 import billboards from "@/collections/billboards";
 import Heading from "@/components/together/Heading";
-import { Separator } from "@/components/ui/separator";
 
 import From from "./From";
 import Delete from "./Delete";

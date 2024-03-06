@@ -20,7 +20,7 @@ const Delete = (p: { billboardId: string; storeId: string }) => {
         try {
             setLoading(true);
             await ajax.delete(`/api/${p.storeId}/billboards?id=${p.billboardId}`);
-            router.push("/dashboard/");
+            router.push(`/dashboard/${p.storeId}/billboards`);
             toast.success("Store deleted");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");
