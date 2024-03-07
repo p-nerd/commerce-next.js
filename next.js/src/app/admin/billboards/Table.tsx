@@ -11,15 +11,15 @@ import { getPaginationRowModel, getSortedRowModel, useReactTable } from "@tansta
 import { useDeleteModal } from "@/components/modals/delete-modal";
 
 import { CopyIcon, DeleteIcon, EditIcon } from "lucide-react";
-import { CrossCircledIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { DataTable, DataTableRowActions } from "@/components/ui2/data-table";
-import { DataTableFacetedFilter, DataTableColumnHeader } from "@/components/ui2/data-table";
+import { DataTable, DataTableRowActions, DataTableColumnHeader } from "@/components/ui2/data-table";
 import { DataTableColumnToggle, DataTableSelectRowCheckbox } from "@/components/ui2/data-table";
 import { DataTablePagination, DataTableFilters } from "@/components/ui2/data-table";
 import { DataTableSelectAllCheckbox } from "@/components/ui2/data-table";
 
+import ajax from "@/lib/ajax";
 import time from "@/helpers/time";
 import utils from "@/helpers/utils";
+import toast from "react-hot-toast";
 
 const columns: ColumnDef<TBillboard>[] = [
     {
@@ -65,8 +65,11 @@ const columns: ColumnDef<TBillboard>[] = [
                         {
                             label: "Delete",
                             onClick: () => {
-                                deleteModal.setOnConfirm(() => {
-                                    console.log("here i am fucker");
+                                deleteModal.setOnConfirm(async () => {
+                                    await ajax.delete(`/api/billboards?id=${billboard.id}`);
+                                    toast.success("Billboard deleted successfully");
+                                    deleteModal.setOpen(false);
+                                    router.refresh();
                                 });
                                 deleteModal.setOpen(true);
                             },
@@ -76,19 +79,6 @@ const columns: ColumnDef<TBillboard>[] = [
                 />
             );
         },
-    },
-];
-
-const statuses = [
-    {
-        value: "active",
-        label: "Active",
-        icon: QuestionMarkCircledIcon,
-    },
-    {
-        value: "inactive",
-        label: "Inactive",
-        icon: CrossCircledIcon,
     },
 ];
 
@@ -121,13 +111,6 @@ const Table = (p: { billboards: TBillboard[] }) => {
         <div className="flex w-full flex-col gap-5">
             <div className="flex items-center gap-2">
                 <DataTableFilters table={table} placeholder="Filters label..." column="label" />
-                {table.getColumn("status") && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn("status")}
-                        title="Status"
-                        options={statuses}
-                    />
-                )}
                 <DataTableColumnToggle table={table} />
             </div>
             <DataTable table={table} />

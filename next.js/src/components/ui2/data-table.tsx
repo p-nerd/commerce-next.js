@@ -5,6 +5,7 @@ import type { Column, Row, Table as TSTable } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { flexRender } from "@tanstack/react-table";
 
+import { LucideIcon } from "lucide-react";
 import { CaretSortIcon, DotsHorizontalIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { ArrowDownIcon, ArrowUpIcon, EyeNoneIcon } from "@radix-ui/react-icons";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
@@ -25,8 +26,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ReactNode } from "react";
-import { LucideIcon } from "lucide-react";
 
 export const DataTableColumnHeader = <TData, TValue>(
     p: React.HTMLAttributes<HTMLDivElement> & { column: Column<TData, TValue>; title: string },
@@ -165,7 +164,7 @@ export const DataTableFacetedFilter = <TData, TValue>({
                                             }
                                             const filterValues = Array.from(selectedValues);
                                             column?.setFilterValue(
-                                                filterValues.length ? filterValues : undefined,
+                                                filterValues.length ? filterValues : [],
                                             );
                                         }}
                                     >
@@ -333,9 +332,9 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                            )}
+                                                  header.column.columnDef.header,
+                                                  header.getContext(),
+                                              )}
                                     </TableHead>
                                 );
                             })}
@@ -344,7 +343,7 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
                 </TableHeader>
                 <TableBody>
                     {table.getRowModel().rows?.length ? (
-                        table.getRowModel().rows.map(row => (
+                        table.getRowModel()?.rows?.map(row => (
                             <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                                 {row.getVisibleCells().map(cell => (
                                     <TableCell key={cell.id}>
