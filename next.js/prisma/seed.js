@@ -7,9 +7,9 @@ export const billboards = (count = 10) => {
     for (let i = 0; i < count; i++) {
         const billboard = {
             id: faker.string.uuid(),
-            storeId: faker.string.uuid(),
             label: faker.lorem.words(2),
             imageUrl: faker.image.url(),
+            status: "active",
             createdAt: faker.date.past(),
             updatedAt: faker.date.recent(),
         };

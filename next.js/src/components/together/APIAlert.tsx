@@ -27,7 +27,7 @@ const APIAlert = ({
                 <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
                     {p.code}
                 </code>
-                <Copy text={p.code} toast="API Route copied to the clipboard.">
+                <Copy text={p.code} toastPrefix="API Route">
                     <CopyIcon />
                 </Copy>
             </AlertDescription>

@@ -1,19 +1,14 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
 
-const Copy = (p: { children: ReactNode; text: string; toast: string }) => {
+import { Button } from "@/components/ui/button";
+
+import utils from "@/helpers/utils";
+
+const Copy = (p: { children: ReactNode; text: string; toastPrefix: string }) => {
     return (
-        <Button
-            variant="outline"
-            size="icon"
-            onClick={() => {
-                navigator.clipboard.writeText(p.text);
-                toast.success(p.toast);
-            }}
-        >
+        <Button variant="outline" size="icon" onClick={() => utils.copy(p.text, p.toastPrefix)}>
             {p.children}
         </Button>
     );

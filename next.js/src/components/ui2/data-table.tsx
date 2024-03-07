@@ -25,6 +25,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
 
 export const DataTableColumnHeader = <TData, TValue>(
     p: React.HTMLAttributes<HTMLDivElement> & { column: Column<TData, TValue>; title: string },
@@ -246,7 +248,7 @@ export const DataTableColumnToggle = <TData,>({ table }: { table: TSTable<TData>
 
 export const DataTablePagination = <TData,>({ table }: { table: TSTable<TData> }) => {
     return (
-        <div className="flex items-center justify-between px-2 py-4">
+        <div className="flex items-center justify-between px-2">
             <div className="flex-1 text-sm text-muted-foreground">
                 {table.getFilteredSelectedRowModel().rows.length} of{" "}
                 {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -327,7 +329,7 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map(header => {
                                 return (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.id} colSpan={header.colSpan}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -364,6 +366,28 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
                 </TableBody>
             </UITable>
         </div>
+    );
+};
+export const DataTableRowActions = (p: {
+    actions: { label: string; onClick: () => void; icon: LucideIcon }[];
+}) => {
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+                    <DotsHorizontalIcon className="h-4 w-4" />
+                    <span className="sr-only">Open menu</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[160px]">
+                {p.actions.map(({ icon: Icon, onClick, label }, index) => (
+                    <DropdownMenuItem key={index} onClick={onClick}>
+                        <Icon className="mr-2 h-4 w-4" />
+                        {label}
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 };
 

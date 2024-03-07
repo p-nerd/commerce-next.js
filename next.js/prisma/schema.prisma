@@ -20,6 +20,12 @@ model Billboard {
   id        String   @id @default(uuid())
   label     String
   imageUrl  String
+  status    Status   @default(active)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  active
+  inactive
 }

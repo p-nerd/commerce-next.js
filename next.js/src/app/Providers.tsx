@@ -1,9 +1,9 @@
 "use client";
 
-import { StoreModal } from "@/components/modals/store-modal";
+import { DeleteModal } from "@/components/modals/delete-modal";
 import { useEffect, useState } from "react";
 
-const ModalsProvider = () => {
+const Providers = () => {
     const [mounded, setMounded] = useState(false);
 
     useEffect(() => {
@@ -16,9 +16,9 @@ const ModalsProvider = () => {
 
     return (
         <>
-            <StoreModal />
+            <DeleteModal />
         </>
     );
 };
 
-export default ModalsProvider;
+export default Providers;
