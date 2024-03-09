@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { DeleteModal } from "@/components/modals/delete-modal";
 import { SpinnerModal } from "@/components/modals/spinner-modal";
+import { ToastModal } from "@/components/modals/toast-modal";
 
 const Providers = () => {
     const [mounded, setMounded] = useState(false);
@@ -20,6 +21,7 @@ const Providers = () => {
         <>
             <DeleteModal />
             <SpinnerModal />
+            <ToastModal />
         </>
     );
 };

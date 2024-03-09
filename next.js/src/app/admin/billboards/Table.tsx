@@ -44,25 +44,31 @@ const columns: ColumnDef<TBillboard>[] = [
         id: "actions",
         enableHiding: false,
         cell: function Actions({ row }) {
-            const router = useRouter();
             const billboard = row.original;
+
+            const { push, refresh } = useRouter();
             const { pending, deleteBillboard } = useDeleteBillboard();
+
             return (
                 <DataTableRowActions
                     actions={[
                         {
                             label: "Copy ID",
-                            onClick: () => utils.copy(billboard.id, "Billboard id"),
+                            onClick: () => utils.copy(billboard.id, "Billboard ID"),
                             icon: CopyIcon,
                         },
                         {
                             label: "Edit",
-                            onClick: () => router.push(`/admin/billboards/${billboard.id}`),
+                            onClick: () => push(`/admin/billboards/${billboard.id}`),
                             icon: EditIcon,
                         },
                         {
                             label: "Delete",
-                            onClick: () => deleteBillboard(billboard.id, () => router.refresh()),
+                            onClick: () =>
+                                deleteBillboard({
+                                    billboardId: billboard.id,
+                                    onAfterDelete: () => refresh(),
+                                }),
                             icon: DeleteIcon,
                             disabled: pending,
                         },

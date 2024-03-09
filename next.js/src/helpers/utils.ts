@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import { toast } from "@/components/modals/toast-modal";
 
 const utils = {
     url: (path: string): URL => new URL(path),

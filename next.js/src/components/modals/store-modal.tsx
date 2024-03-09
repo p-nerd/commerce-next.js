@@ -5,8 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 import { ajax } from "@/lib/ajax";
+import { toast } from "@/components/modals/toast-modal";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
