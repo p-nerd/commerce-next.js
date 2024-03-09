@@ -36,9 +36,9 @@ export const useDeleteModal = create<{
     setDescription: (description: string) => set(s => ({ ...s, description })),
     pending: false,
     setPending: pending => set(s => ({ ...s, pending })),
-    onCancel: () => { },
+    onCancel: () => {},
     setOnCancel: (onCancel: () => void) => set(s => ({ ...s, onCancel })),
-    onConfirm: () => { },
+    onConfirm: () => {},
     setOnConfirm: (onConfirm: () => void) => set(s => ({ ...s, onConfirm })),
 }));
 
