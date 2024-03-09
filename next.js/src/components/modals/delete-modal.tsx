@@ -1,3 +1,5 @@
+"use client";
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -9,6 +11,8 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { create } from "zustand";
+import { useSpinnerModal } from "./spinner-modal";
+import { useEffect } from "react";
 
 export const useDeleteModal = create<{
     open: boolean;
@@ -17,8 +21,8 @@ export const useDeleteModal = create<{
     setTitle: (title: string) => void;
     description: string;
     setDescription: (description: string) => void;
-    disabled: boolean;
-    setDisabled: (disabled: boolean) => void;
+    pending: boolean;
+    setPending: (disabled: boolean) => void;
     onCancel: () => void;
     setOnCancel: (onCancel: () => void) => void;
     onConfirm: () => void;
@@ -30,16 +34,22 @@ export const useDeleteModal = create<{
     setTitle: (title: string) => set(s => ({ ...s, title })),
     description: "This will permanently delete data from the servers.",
     setDescription: (description: string) => set(s => ({ ...s, description })),
-    disabled: false,
-    setDisabled: disabled => set(s => ({ ...s, disabled })),
-    onCancel: () => {},
+    pending: false,
+    setPending: pending => set(s => ({ ...s, pending })),
+    onCancel: () => { },
     setOnCancel: (onCancel: () => void) => set(s => ({ ...s, onCancel })),
-    onConfirm: () => {},
+    onConfirm: () => { },
     setOnConfirm: (onConfirm: () => void) => set(s => ({ ...s, onConfirm })),
 }));
 
 export const DeleteModal = () => {
-    const { open, title, description, disabled, onCancel, onConfirm, setOpen } = useDeleteModal();
+    const { open, title, description, pending, onCancel, onConfirm, setOpen } = useDeleteModal();
+    const { setLoading } = useSpinnerModal();
+
+    useEffect(() => {
+        setLoading(pending);
+    }, [pending, setLoading]);
+
     return (
         <>
             <AlertDialog open={open}>
@@ -50,7 +60,7 @@ export const DeleteModal = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter className="items-center space-x-2 pt-6">
                         <AlertDialogCancel
-                            disabled={disabled}
+                            disabled={pending}
                             onClick={() => {
                                 onCancel();
                                 setOpen(false);
@@ -58,8 +68,8 @@ export const DeleteModal = () => {
                         >
                             Cancel
                         </AlertDialogCancel>
-                        <AlertDialogAction disabled={disabled} onClick={onConfirm}>
-                            Continue
+                        <AlertDialogAction disabled={pending} onClick={onConfirm}>
+                            Continue {pending && "..."}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

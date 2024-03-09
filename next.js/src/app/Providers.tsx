@@ -1,7 +1,9 @@
 "use client";
 
-import { DeleteModal } from "@/components/modals/delete-modal";
 import { useEffect, useState } from "react";
+
+import { DeleteModal } from "@/components/modals/delete-modal";
+import { SpinnerModal } from "@/components/modals/spinner-modal";
 
 const Providers = () => {
     const [mounded, setMounded] = useState(false);
@@ -17,6 +19,7 @@ const Providers = () => {
     return (
         <>
             <DeleteModal />
+            <SpinnerModal />
         </>
     );
 };

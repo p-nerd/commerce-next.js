@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCoreRowModel, getFilteredRowModel } from "@tanstack/react-table";
 import { getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { useDeleteModal } from "@/components/modals/delete-modal";
+import { useDeleteBillboard } from "./[id]/Delete";
 
 import { CopyIcon, DeleteIcon, EditIcon } from "lucide-react";
 import { DataTable, DataTableRowActions, DataTableColumnHeader } from "@/components/ui2/data-table";
@@ -16,10 +16,8 @@ import { DataTableColumnToggle, DataTableSelectRowCheckbox } from "@/components/
 import { DataTablePagination, DataTableFilters } from "@/components/ui2/data-table";
 import { DataTableSelectAllCheckbox } from "@/components/ui2/data-table";
 
-import ajax from "@/lib/ajax";
 import time from "@/helpers/time";
 import utils from "@/helpers/utils";
-import toast from "react-hot-toast";
 
 const columns: ColumnDef<TBillboard>[] = [
     {
@@ -48,7 +46,7 @@ const columns: ColumnDef<TBillboard>[] = [
         cell: function Actions({ row }) {
             const router = useRouter();
             const billboard = row.original;
-            const deleteModal = useDeleteModal();
+            const { pending, deleteBillboard } = useDeleteBillboard();
             return (
                 <DataTableRowActions
                     actions={[
@@ -64,16 +62,9 @@ const columns: ColumnDef<TBillboard>[] = [
                         },
                         {
                             label: "Delete",
-                            onClick: () => {
-                                deleteModal.setOnConfirm(async () => {
-                                    await ajax.delete(`/api/billboards?id=${billboard.id}`);
-                                    toast.success("Billboard deleted successfully");
-                                    deleteModal.setOpen(false);
-                                    router.refresh();
-                                });
-                                deleteModal.setOpen(true);
-                            },
+                            onClick: () => deleteBillboard(billboard.id, () => router.refresh()),
                             icon: DeleteIcon,
+                            disabled: pending,
                         },
                     ]}
                 />

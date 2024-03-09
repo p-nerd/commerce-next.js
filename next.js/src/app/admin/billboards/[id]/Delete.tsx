@@ -2,48 +2,50 @@
 
 import { ajax } from "@/lib/ajax";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useDeleteModal } from "@/components/modals/delete-modal";
 
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import AlertDialog from "@/components/together/AlertDialog";
+export const useDeleteBillboard = () => {
+    const deleteModal = useDeleteModal();
+
+    const deleteBillboard = (billboardId: string, onAfterDelete: () => void) => {
+        deleteModal.setDescription(
+            "This action cannot be undone. This will permanently delete this billboard.",
+        );
+        deleteModal.setOnConfirm(async () => {
+            try {
+                deleteModal.setPending(true);
+                await ajax.delete(`/api/billboards?id=${billboardId}`);
+                deleteModal.setOpen(false);
+                onAfterDelete();
+                toast.success("Billboard deleted successfully");
+            } catch (error: any) {
+                toast.error(error?.message || "Something went wrong");
+            } finally {
+                deleteModal.setPending(false);
+            }
+        });
+        deleteModal.setOpen(true);
+    };
+
+    return { pending: deleteModal.pending, deleteBillboard };
+};
 
 const Delete = (p: { billboardId: string }) => {
     const router = useRouter();
-
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const handleDelete = async () => {
-        try {
-            setLoading(true);
-            await ajax.delete(`/api/billboards?id=${p.billboardId}`);
-            router.push(`/admin/billboards`);
-            toast.success("Store deleted");
-        } catch (error: any) {
-            toast.error(error?.message || "Something went wrong");
-        } finally {
-            setLoading(false);
-            setOpen(false);
-        }
-    };
-
+    const { pending, deleteBillboard } = useDeleteBillboard();
     return (
         <>
-            <AlertDialog
-                description="This action cannot be undone. This will permanently delete this billboard."
-                open={open}
-                onCancel={() => setOpen(false)}
-                onConfirm={handleDelete}
-                disabled={loading}
-            />
             <Button
-                disabled={loading}
+                disabled={pending}
                 variant="destructive"
                 size="sm"
-                onClick={() => setOpen(true)}
+                onClick={() =>
+                    deleteBillboard(p.billboardId, () => router.push("/admin/billboards"))
+                }
             >
                 <Trash className="h-4 w-4" />
             </Button>

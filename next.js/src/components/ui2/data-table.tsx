@@ -332,9 +332,9 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                  header.column.columnDef.header,
-                                                  header.getContext(),
-                                              )}
+                                                header.column.columnDef.header,
+                                                header.getContext(),
+                                            )}
                                     </TableHead>
                                 );
                             })}
@@ -368,7 +368,7 @@ export const DataTable = <TData,>({ table }: { table: TSTable<TData> }) => {
     );
 };
 export const DataTableRowActions = (p: {
-    actions: { label: string; onClick: () => void; icon: LucideIcon }[];
+    actions: { label: string; onClick: () => void; icon: LucideIcon; disabled?: boolean }[];
 }) => {
     return (
         <DropdownMenu>
@@ -379,8 +379,8 @@ export const DataTableRowActions = (p: {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                {p.actions.map(({ icon: Icon, onClick, label }, index) => (
-                    <DropdownMenuItem key={index} onClick={onClick}>
+                {p.actions.map(({ icon: Icon, onClick, label, disabled }, index) => (
+                    <DropdownMenuItem key={index} onClick={onClick} disabled={disabled}>
                         <Icon className="mr-2 h-4 w-4" />
                         {label}
                     </DropdownMenuItem>

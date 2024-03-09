@@ -1,12 +1,19 @@
 import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
 
-import billboards from "@/collections/billboards";
+import billboards, { TBillboard } from "@/collections/billboards";
 import Heading from "@/components/together/Heading";
 import From from "./From";
 import Delete from "./Delete";
 
 const Billboard = async (p: { params: { id: string } }) => {
-    const billboard = await billboards.find(p.params.id);
+    let billboard: TBillboard | null = null;
+    if (p.params.id !== "new") {
+        billboard = await billboards.find(p.params.id);
+        if (!billboard) {
+            notFound();
+        }
+    }
 
     return (
         <>
