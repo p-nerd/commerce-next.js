@@ -2,13 +2,13 @@
 
 import type { TBillboard } from "@/collections/billboards";
 
-import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ajax } from "@/lib/ajax";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/modals/toast-modal";
+import { useSpinnerModal } from "@/components/modals/spinner-modal";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
@@ -23,8 +23,7 @@ const schema = z.object({
 });
 
 const From = (p: { billboard: TBillboard | null }) => {
-    const [loading, setLoading] = useState(false);
-
+    const { loading, setLoading } = useSpinnerModal();
     const { push, refresh } = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({

@@ -9,7 +9,7 @@
         "shadcn-ui": "shadcn-ui",
         "prisma": "prisma",
         "postinstall": "prisma generate",
-        "seed": "bun run prisma/seed.js"
+        "seed": "bun run prisma/seed.ts"
     },
     "dependencies": {
         "@clerk/nextjs": "^4.29.9",

@@ -12,15 +12,19 @@ const Links = (p: HTMLAttributes<HTMLElement>) => {
 
     const routes = [
         {
-            href: `/admin`,
+            href: "/admin",
             label: "Overview",
         },
         {
-            href: `/admin/billboards`,
+            href: "/admin/billboards",
             label: "Billboards",
         },
         {
-            href: `/admin/settings`,
+            href: "/admin/categories",
+            label: "Categories",
+        },
+        {
+            href: "/admin/settings",
             label: "Settings",
         },
     ];
