@@ -23,8 +23,9 @@ const schema = z.object({
 });
 
 const From = (p: { billboard: TBillboard | null }) => {
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
+
+    const { push, refresh } = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -39,7 +40,9 @@ const From = (p: { billboard: TBillboard | null }) => {
             } else {
                 await ajax.post(`/api/billboards`, values);
             }
-            router.push(`/admin/billboards`);
+            push(`/admin/billboards`);
+            refresh();
+
             toast.success(p.billboard ? "Billboard updated" : "Billboard created");
         } catch (error: any) {
             toast.error(error?.message || "Something went wrong");

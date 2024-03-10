@@ -34,6 +34,7 @@ const columns: ColumnDef<TBillboard>[] = [
     {
         header: ({ column }) => <DataTableColumnHeader title="Date" column={column} />,
         accessorKey: "date",
+        sortingFn: (a, b) => a.original.createdAt.getTime() - b.original.createdAt.getTime(),
         accessorFn: row => time.format.day_month_year(row.createdAt),
     },
     {
