@@ -10,33 +10,45 @@ datasource db {
 
 model Store {
   id        String   @id @default(uuid())
-  name      String
-  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  name   String
+  userId String
 }
 
 model Billboard {
   id        String   @id @default(uuid())
-  label     String
-  imageUrl  String
-  status    Status   @default(active)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  label    String
+  imageUrl String
+  status   Status @default(active)
 
   Category Category[]
 }
 
 model Category {
-  id          String   @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   billboardId String
 
   billboard Billboard @relation(fields: [billboardId], references: [id])
 
   @@index([billboardId])
+}
+
+model Size {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String
+  value String
 }
 
 enum Status {

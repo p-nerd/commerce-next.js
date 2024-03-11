@@ -24,6 +24,10 @@ const Links = (p: HTMLAttributes<HTMLElement>) => {
             label: "Categories",
         },
         {
+            href: "/admin/sizes",
+            label: "Sizes",
+        },
+        {
             href: "/admin/settings",
             label: "Settings",
         },

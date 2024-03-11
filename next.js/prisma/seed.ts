@@ -1,7 +1,10 @@
+import type { TBillboard } from "@/collections/billboards";
+import type { TCategory } from "@/collections/categories";
+import type { TSize } from "@/collections/sizes";
+
 import { PrismaClient } from "@prisma/client";
+
 import { faker } from "@faker-js/faker";
-import { TBillboard } from "@/collections/billboards";
-import { TCategory } from "@/collections/categories";
 
 const log = (message: string) => {
     const max_len = 10;
@@ -18,7 +21,7 @@ const log = (message: string) => {
     console.log(`${tag}]${spaces}${split[1]}`);
 };
 
-const random_index = (array: string[]) => {
+const random = (array: string[]) => {
     return Math.floor(Math.random() * array.length);
 };
 
@@ -46,8 +49,8 @@ const categories = (count = 10, billboardIDs: string[]): TCategory[] => {
     for (let i = 0; i < count; i++) {
         const category: TCategory = {
             id: faker.string.uuid(),
-            name: faker.lorem.words(2),
-            billboardId: billboardIDs[random_index(billboardIDs)],
+            name: faker.lorem.word(),
+            billboardId: billboardIDs[random(billboardIDs)],
             createdAt: faker.date.past(),
             updatedAt: faker.date.recent(),
         };
@@ -57,28 +60,61 @@ const categories = (count = 10, billboardIDs: string[]): TCategory[] => {
     return categories;
 };
 
+const sizes = (count = 10): TSize[] => {
+    log(`[generate] Generating ${count} sizes...`);
+    const sizes: TSize[] = [];
+    const sizeValues = ["m", "l", "xl", "2xl", "3xl"];
+    for (let i = 0; i < count; i++) {
+        const sizeValue = sizeValues[random(sizeValues)];
+        const size: TSize = {
+            id: faker.string.uuid(),
+            name: sizeValue.toUpperCase(),
+            value: sizeValue,
+            createdAt: faker.date.past(),
+            updatedAt: faker.date.recent(),
+        };
+        sizes.push(size);
+    }
+    log(`[generate] Generated ${categories.length} sizes`);
+    return sizes;
+};
+
 const prisma = new PrismaClient();
 log(`[database] Connected to the database`);
 
 const main = async () => {
     try {
         console.log(`-----------------------------------------------------------`);
+
         log(`[delete] Deleting existing records in categories table...`);
         await prisma.category.deleteMany();
         log(`[delete] Deleted records in categories table`);
+
         log(`[delete] Deleting existing records in billboards table...`);
         await prisma.billboard.deleteMany();
         log(`[delete] Deleted records in billboards table`);
+
+        log(`[delete] Deleting existing records in sizes table...`);
+        await prisma.size.deleteMany();
+        log(`[delete] Deleted records in sizes table`);
+
         console.log(`-----------------------------------------------------------`);
 
         console.log(`-----------------------------------------------------------`);
+
         log(`[create] Adding new billboards data...`);
         await prisma.billboard.createMany({ data: billboards(100) });
         log(`[create] Added billboards data`);
+
         log(`[create] Adding new categories data...`);
         const billboardIDs = (await prisma.billboard.findMany()).map(b => b.id);
         await prisma.category.createMany({ data: categories(100, billboardIDs) });
         log(`[create] Added categories data`);
+
+        log(`[create] Adding new sizes data...`);
+        await prisma.size.createMany({ data: sizes(100) });
+        log(`[create] Added sizes data`);
+
         console.log(`-----------------------------------------------------------`);
     } catch (error: any) {
         log(`[Error] ${error?.message}`);
