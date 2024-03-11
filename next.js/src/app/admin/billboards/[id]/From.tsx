@@ -14,8 +14,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-import ImageUpload from "@/components/ui2/ImageUpload";
+import { ImageUpload } from "@/components/ui2/uploads";
 
 const schema = z.object({
     label: z.string().min(1),

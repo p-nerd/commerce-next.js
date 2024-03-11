@@ -3,10 +3,10 @@ import type { TSize } from "@/collections/sizes";
 import { notFound } from "next/navigation";
 
 import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui2/typography";
 
 import sizes from "@/collections/sizes";
 
-import Heading from "@/components/together/Heading";
 import From from "./From";
 import Delete from "./Delete";
 

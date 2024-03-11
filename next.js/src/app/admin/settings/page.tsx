@@ -1,10 +1,10 @@
 import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui2/typography";
 
-import Heading from "@/components/together/Heading";
+import stores from "@/collections/stores";
 
 import From from "./From";
 import APIKeys from "./APIKeys";
-import stores from "@/collections/stores";
 
 const Settings = async () => {
     const store = await stores.findFirstOne();

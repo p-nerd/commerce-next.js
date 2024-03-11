@@ -1,9 +1,10 @@
-import { Plus } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+
+import { Plus } from "lucide-react";
+import { Heading } from "@/components/ui2/typography";
 
 import billboards from "@/collections/billboards";
 
-import Heading from "@/components/together/Heading";
 import Link from "next/link";
 import Table from "./Table";
 

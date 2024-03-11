@@ -1,4 +1,6 @@
-import { ExternalToast, toast as t } from "sonner";
+import type { ExternalToast } from "sonner";
+
+import { toast as t } from "sonner";
 
 import { Toaster } from "@/components/ui/sonner";
 

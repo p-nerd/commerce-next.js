@@ -1,9 +1,18 @@
-import { Copy as CopyIcon, Server } from "lucide-react";
+import { CopyIcon, Server } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import Copy from "@/components/together/Copy";
+import { Copy } from "./typography2";
 
-const APIAlert = ({
+export const Heading = (p: { title: string; description: string }) => {
+    return (
+        <div>
+            <h2 className="text-3xl font-bold tracking-tight">{p.title}</h2>
+            <p className="text-sm text-muted-foreground">{p.description}</p>
+        </div>
+    );
+};
+
+export const APIAlert = ({
     variant = "public",
     ...p
 }: {
@@ -34,5 +43,3 @@ const APIAlert = ({
         </Alert>
     );
 };
-
-export default APIAlert;

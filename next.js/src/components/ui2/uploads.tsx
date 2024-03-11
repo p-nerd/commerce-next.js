@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "../ui/button";
 import { ImagePlus, Trash } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
+import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
 
-const ImageUpload = (p: {
+export const ImageUpload = (p: {
     disabled?: boolean;
     onDone: (url: string) => void;
     onDelete: (url: string) => void;
@@ -47,5 +47,3 @@ const ImageUpload = (p: {
         </div>
     );
 };
-
-export default ImageUpload;

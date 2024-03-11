@@ -8,12 +8,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { ajax } from "@/lib/ajax";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/modals/toast-modal";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/modals/toast-modal";
 
 const schema = z.object({
     name: z.string().min(1),

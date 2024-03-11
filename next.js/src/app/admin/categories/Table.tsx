@@ -13,7 +13,6 @@ import { useDeleteCategory } from "./[id]/Delete";
 
 import { CopyIcon, DeleteIcon, EditIcon } from "lucide-react";
 import { DataTable, DataTableRowActions, DataTableColumnHeader } from "@/components/ui2/data-table";
-
 import { DataTableColumnToggle, DataTableSelectRowCheckbox } from "@/components/ui2/data-table";
 import { DataTablePagination, DataTableFilters } from "@/components/ui2/data-table";
 import { DataTableSelectAllCheckbox } from "@/components/ui2/data-table";

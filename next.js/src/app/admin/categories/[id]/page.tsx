@@ -3,11 +3,11 @@ import type { TCategory } from "@/collections/categories";
 import { notFound } from "next/navigation";
 
 import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui2/typography";
 
 import categories from "@/collections/categories";
 import billboards from "@/collections/billboards";
 
-import Heading from "@/components/together/Heading";
 import From from "./From";
 import Delete from "./Delete";
 

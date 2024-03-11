@@ -1,8 +1,12 @@
-import { Separator } from "@/components/ui/separator";
+import type { TBillboard } from "@/collections/billboards";
+
 import { notFound } from "next/navigation";
 
-import billboards, { TBillboard } from "@/collections/billboards";
-import Heading from "@/components/together/Heading";
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui2/typography";
+
+import billboards from "@/collections/billboards";
+
 import From from "./From";
 import Delete from "./Delete";
 

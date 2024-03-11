@@ -1,4 +1,5 @@
 import type { Size } from "@prisma/client";
+
 import { prisma } from "@/lib/prisma";
 
 export type TSize = Size;

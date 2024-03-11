@@ -1,7 +1,21 @@
 "use client";
 
-import APIAlert from "@/components/together/APIAlert";
-import useOrigin from "@/hooks/useOrigin";
+import { useEffect, useState } from "react";
+import { APIAlert } from "@/components/ui2/typography";
+
+const useOrigin = () => {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return "";
+    }
+
+    return window?.location?.origin || "";
+};
 
 const APIKeys = () => {
     const origin = useOrigin();

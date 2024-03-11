@@ -1,18 +1,13 @@
 "use client";
 
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { create } from "zustand";
-import { useSpinnerModal } from "./spinner-modal";
 import { useEffect } from "react";
+import { useSpinnerModal } from "./spinner-modal";
+
+import { AlertDialog, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { AlertDialogContent, AlertDialogDescription } from "@/components/ui/alert-dialog";
+import { AlertDialogFooter, AlertDialogHeader } from "@/components/ui/alert-dialog";
+import { AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export const useDeleteModal = create<{
     open: boolean;
