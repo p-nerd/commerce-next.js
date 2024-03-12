@@ -21,7 +21,9 @@ export const useDeleteSize = () => {
                 a.onAfterDelete && a.onAfterDelete();
                 toast.success("Size deleted successfully");
             } catch (error: any) {
-                toast.error(error?.message || "Something went wrong");
+                toast.error(
+                    error?.response?.data?.message || error?.message || "Something went wrong",
+                );
             } finally {
                 setPending(false);
             }

@@ -1,3 +1,4 @@
+import { errorResponse } from "@/helpers/response";
 import { prisma } from "@/lib/prisma";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -6,17 +7,17 @@ export const POST = async (req: NextRequest) => {
     try {
         const { label, imageUrl } = (await req.json()) as { label: string; imageUrl: string };
         if (!label) {
-            return new NextResponse("Label is required", { status: 400 });
+            return errorResponse("Label is required", 400);
         }
         if (!imageUrl) {
-            return new NextResponse("ImageUrl is required", { status: 400 });
+            return errorResponse("ImageUrl is required", 400);
         }
 
         const billboard = await prisma().billboard.create({ data: { label, imageUrl } });
         return NextResponse.json(billboard);
     } catch (e: any) {
         console.log("[BILLBOARDS::POST]", e);
-        return new NextResponse(e?.message || "Internal error", { status: 500 });
+        return errorResponse(e?.message || "Internal error", 500);
     }
 };
 
@@ -24,15 +25,15 @@ export const PATCH = async (request: NextRequest) => {
     try {
         const billboardId = request.nextUrl.searchParams.get("id") as string;
         if (!billboardId) {
-            return new NextResponse("id param is required", { status: 400 });
+            return errorResponse("id param is required", 400);
         }
 
         const { label, imageUrl } = (await request.json()) as { label: string; imageUrl: string };
         if (!label) {
-            return new NextResponse("Label is required", { status: 400 });
+            return errorResponse("Label is required", 400);
         }
         if (!imageUrl) {
-            return new NextResponse("ImageUrl is required", { status: 400 });
+            return errorResponse("ImageUrl is required", 400);
         }
 
         const billboard = await prisma().billboard.update({
@@ -42,7 +43,7 @@ export const PATCH = async (request: NextRequest) => {
         return NextResponse.json(billboard);
     } catch (e: any) {
         console.log("[BILLBOARDS::PATCH]", e);
-        return new NextResponse(e?.message || "Internal error", { status: 500 });
+        return errorResponse(e?.message || "Internal error", 500);
     }
 };
 
@@ -50,7 +51,7 @@ export const DELETE = async (request: NextRequest) => {
     try {
         const billboardId = request.nextUrl.searchParams.get("id") as string;
         if (!billboardId) {
-            return new NextResponse("id param is required", { status: 400 });
+            return errorResponse("id param is required", 400);
         }
 
         await prisma().billboard.delete({ where: { id: billboardId } });
@@ -58,6 +59,6 @@ export const DELETE = async (request: NextRequest) => {
         return NextResponse.json({ id: "billboard deleted" });
     } catch (e: any) {
         console.log("[BILLBOARDS::DELETE]", e);
-        return new NextResponse(e?.message || "Internal error", { status: 500 });
+        return errorResponse(e?.message || "Internal error", 400);
     }
 };

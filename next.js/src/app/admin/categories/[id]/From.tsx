@@ -45,7 +45,7 @@ const From = (p: { category: TCategory | null; billboards: TBillboard[] }) => {
 
             toast.success(p.category ? "Category updated" : "Category created");
         } catch (error: any) {
-            toast.error(error?.message || "Something went wrong");
+            toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
         } finally {
             setLoading(false);
         }

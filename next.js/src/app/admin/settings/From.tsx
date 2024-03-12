@@ -37,7 +37,7 @@ const From = (p: { store: TStore }) => {
             router.refresh();
             toast.success("Store updated");
         } catch (error: any) {
-            toast.error(error?.message || "Something went wrong");
+            toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
         } finally {
             setLoading(false);
         }

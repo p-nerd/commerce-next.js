@@ -42,7 +42,7 @@ const From = (p: { size: TSize | null }) => {
 
             toast.success(p.size ? "Size updated" : "Size created");
         } catch (error: any) {
-            toast.error(error?.message || "Something went wrong");
+            toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
