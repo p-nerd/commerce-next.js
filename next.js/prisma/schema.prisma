@@ -51,6 +51,15 @@ model Size {
   value String
 }
 
+model Color {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String
+  value String
+}
+
 enum Status {
   active
   inactive

@@ -1,6 +1,6 @@
 "use client";
 
-import type { TSize } from "@/collections/sizes";
+import type { TColor } from "@/collections/colors";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -20,27 +20,27 @@ const schema = z.object({
     value: z.string().min(1),
 });
 
-const From = (p: { size: TSize | null }) => {
+const From = (p: { color: TColor | null }) => {
     const { loading, setLoading } = useSpinnerModal();
     const { push, refresh } = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
-        defaultValues: { name: p.size?.name, value: p.size?.value },
+        defaultValues: { name: p.color?.name, value: p.color?.value },
     });
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            if (p.size) {
-                await ajax.patch(`/api/sizes?id=${p.size.id}`, values);
+            if (p.color) {
+                await ajax.patch(`/api/colors?id=${p.color.id}`, values);
             } else {
-                await ajax.post(`/api/sizes`, values);
+                await ajax.post(`/api/colors`, values);
             }
-            push(`/admin/sizes`);
+            push(`/admin/colors`);
             refresh();
 
-            toast.success(p.size ? "Size updated" : "Size created");
+            toast.success(p.color ? "Color updated" : "Color created");
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
         } finally {
@@ -59,7 +59,7 @@ const From = (p: { size: TSize | null }) => {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input disabled={loading} placeholder="size name" {...field} />
+                                    <Input disabled={loading} placeholder="color name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -72,7 +72,11 @@ const From = (p: { size: TSize | null }) => {
                             <FormItem>
                                 <FormLabel>Value</FormLabel>
                                 <FormControl>
-                                    <Input disabled={loading} placeholder="size value" {...field} />
+                                    <Input
+                                        disabled={loading}
+                                        placeholder="color value"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -80,7 +84,7 @@ const From = (p: { size: TSize | null }) => {
                     />
                 </div>
                 <Button disabled={loading} type="submit">
-                    {p.size ? "Save changes" : "Create"}
+                    {p.color ? "Save changes" : "Create"}
                 </Button>
             </form>
         </Form>

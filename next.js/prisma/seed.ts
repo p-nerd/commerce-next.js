@@ -1,10 +1,10 @@
 import type { TBillboard } from "@/collections/billboards";
 import type { TCategory } from "@/collections/categories";
 import type { TSize } from "@/collections/sizes";
-
-import { PrismaClient } from "@prisma/client";
+import type { TColor } from "@/collections/colors";
 
 import { faker } from "@faker-js/faker";
+import { prisma } from "@/lib/prisma";
 
 const log = (message: string) => {
     const max_len = 10;
@@ -79,7 +79,25 @@ const sizes = (count = 10): TSize[] => {
     return sizes;
 };
 
-const prisma = new PrismaClient();
+const colors = (count = 10): TColor[] => {
+    log(`[generate] Generating ${count} colors...`);
+    const sizes: TSize[] = [];
+    const sizeValues = ["red", "green", "yellow", "blue"];
+    for (let i = 0; i < count; i++) {
+        const sizeValue = sizeValues[random(sizeValues)];
+        const size: TSize = {
+            id: faker.string.uuid(),
+            name: sizeValue.toUpperCase(),
+            value: sizeValue,
+            createdAt: faker.date.past(),
+            updatedAt: faker.date.recent(),
+        };
+        sizes.push(size);
+    }
+    log(`[generate] Generated ${categories.length} sizes`);
+    return sizes;
+};
+
 log(`[database] Connected to the database`);
 
 const main = async () => {
@@ -87,40 +105,48 @@ const main = async () => {
         console.log(`-----------------------------------------------------------`);
 
         log(`[delete] Deleting existing records in categories table...`);
-        await prisma.category.deleteMany();
+        await prisma().category.deleteMany();
         log(`[delete] Deleted records in categories table`);
 
         log(`[delete] Deleting existing records in billboards table...`);
-        await prisma.billboard.deleteMany();
+        await prisma().billboard.deleteMany();
         log(`[delete] Deleted records in billboards table`);
 
         log(`[delete] Deleting existing records in sizes table...`);
-        await prisma.size.deleteMany();
+        await prisma().size.deleteMany();
         log(`[delete] Deleted records in sizes table`);
+
+        log(`[delete] Deleting existing records in colors table...`);
+        await prisma().color.deleteMany();
+        log(`[delete] Deleted records in colors table`);
 
         console.log(`-----------------------------------------------------------`);
 
         console.log(`-----------------------------------------------------------`);
 
         log(`[create] Adding new billboards data...`);
-        await prisma.billboard.createMany({ data: billboards(100) });
+        await prisma().billboard.createMany({ data: billboards(100) });
         log(`[create] Added billboards data`);
 
         log(`[create] Adding new categories data...`);
-        const billboardIDs = (await prisma.billboard.findMany()).map(b => b.id);
-        await prisma.category.createMany({ data: categories(100, billboardIDs) });
+        const billboardIDs = (await prisma().billboard.findMany()).map(b => b.id);
+        await prisma().category.createMany({ data: categories(100, billboardIDs) });
         log(`[create] Added categories data`);
 
         log(`[create] Adding new sizes data...`);
-        await prisma.size.createMany({ data: sizes(100) });
+        await prisma().size.createMany({ data: sizes(100) });
         log(`[create] Added sizes data`);
+
+        log(`[create] Adding new colors data...`);
+        await prisma().color.createMany({ data: colors(10) });
+        log(`[create] Added colors data`);
 
         console.log(`-----------------------------------------------------------`);
     } catch (error: any) {
         log(`[Error] ${error?.message}`);
         process.exit(1);
     } finally {
-        await prisma.$disconnect();
+        await prisma().$disconnect();
         log(`[database] Disconnected from the database`);
     }
 };
