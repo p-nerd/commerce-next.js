@@ -34,7 +34,15 @@ const columns: ColumnDef<TColor>[] = [
     {
         header: ({ column }) => <DataTableColumnHeader title="Value" column={column} />,
         accessorKey: "value",
-        cell: ({ row }) => <div style={{ color: row.original.value }}>{row.original.value}</div>,
+        cell: ({ row }) => (
+            <div className="flex items-center gap-1">
+                <div
+                    className="h-6 w-6 rounded-full border border-gray-200 dark:border-gray-800"
+                    style={{ backgroundColor: row.original.value }}
+                ></div>
+                <div>{row.original.value}</div>
+            </div>
+        ),
     },
     {
         header: ({ column }) => <DataTableColumnHeader title="Date" column={column} />,
