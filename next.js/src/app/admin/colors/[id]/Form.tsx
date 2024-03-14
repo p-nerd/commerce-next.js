@@ -1,6 +1,6 @@
 "use client";
 
-import type { TBillboard } from "@/collections/billboards";
+import type { TColor } from "@/collections/colors";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -14,34 +14,33 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ImageUpload } from "@/components/ui2/uploads";
 
 const schema = z.object({
-    label: z.string().min(1),
-    imageUrl: z.string().min(1),
+    name: z.string().min(1),
+    value: z.string().min(1),
 });
 
-const From = (p: { billboard: TBillboard | null }) => {
+const _Form = (p: { color: TColor | null }) => {
     const { loading, setLoading } = useSpinnerModal();
     const { push, refresh } = useRouter();
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
-        defaultValues: { label: p.billboard?.label, imageUrl: p.billboard?.imageUrl },
+        defaultValues: { name: p.color?.name, value: p.color?.value },
     });
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            if (p.billboard) {
-                await ajax.patch(`/api/billboards?id=${p.billboard.id}`, values);
+            if (p.color) {
+                await ajax.patch(`/api/colors?id=${p.color.id}`, values);
             } else {
-                await ajax.post(`/api/billboards`, values);
+                await ajax.post(`/api/colors`, values);
             }
-            push(`/admin/billboards`);
+            push(`/admin/colors`);
             refresh();
 
-            toast.success(p.billboard ? "Billboard updated" : "Billboard created");
+            toast.success(p.color ? "Color updated" : "Color created");
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
         } finally {
@@ -52,36 +51,30 @@ const From = (p: { billboard: TBillboard | null }) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
-                <FormField
-                    control={form.control}
-                    name="imageUrl"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Background Image</FormLabel>
-                            <FormControl>
-                                <ImageUpload
-                                    disabled={loading}
-                                    onDelete={() => field.onChange("")}
-                                    onDone={url => field.onChange(url)}
-                                    urls={field.value ? [field.value] : []}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
                 <div className="grid grid-cols-3 gap-8">
                     <FormField
                         control={form.control}
-                        name="label"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Label</FormLabel>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input disabled={loading} placeholder="color name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="value"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Value</FormLabel>
                                 <FormControl>
                                     <Input
                                         disabled={loading}
-                                        placeholder="billboard label"
+                                        placeholder="color value"
                                         {...field}
                                     />
                                 </FormControl>
@@ -91,11 +84,11 @@ const From = (p: { billboard: TBillboard | null }) => {
                     />
                 </div>
                 <Button disabled={loading} type="submit">
-                    {p.billboard ? "Save changes" : "Create"}
+                    {p.color ? "Save changes" : "Create"}
                 </Button>
             </form>
         </Form>
     );
 };
 
-export default From;
+export default _Form;

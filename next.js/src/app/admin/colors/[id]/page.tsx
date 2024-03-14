@@ -7,7 +7,7 @@ import { Heading } from "@/components/ui2/typography";
 
 import colors from "@/collections/colors";
 
-import From from "./From";
+import Form from "./Form";
 import Delete from "./Delete";
 
 const Color = async (p: { params: { id: string } }) => {
@@ -29,7 +29,7 @@ const Color = async (p: { params: { id: string } }) => {
                 {!!color && <Delete colorId={color.id} />}
             </div>
             <Separator />
-            <From color={color} />
+            <Form color={color} />
         </div>
     );
 };

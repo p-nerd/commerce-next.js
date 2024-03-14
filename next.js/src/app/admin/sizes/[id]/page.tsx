@@ -7,7 +7,7 @@ import { Heading } from "@/components/ui2/typography";
 
 import sizes from "@/collections/sizes";
 
-import From from "./From";
+import Form from "./Form";
 import Delete from "./Delete";
 
 const Size = async (p: { params: { id: string } }) => {
@@ -29,7 +29,7 @@ const Size = async (p: { params: { id: string } }) => {
                 {!!size && <Delete sizeId={size.id} />}
             </div>
             <Separator />
-            <From size={size} />
+            <Form size={size} />
         </div>
     );
 };

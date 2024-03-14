@@ -7,7 +7,7 @@ import { Heading } from "@/components/ui2/typography";
 
 import billboards from "@/collections/billboards";
 
-import From from "./From";
+import Form from "./Form";
 import Delete from "./Delete";
 
 const Billboard = async (p: { params: { id: string } }) => {
@@ -29,7 +29,7 @@ const Billboard = async (p: { params: { id: string } }) => {
                 {!!billboard && <Delete billboardId={billboard.id} />}
             </div>
             <Separator />
-            <From billboard={billboard} />
+            <Form billboard={billboard} />
         </div>
     );
 };

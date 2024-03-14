@@ -3,7 +3,7 @@ import { Heading } from "@/components/ui2/typography";
 
 import stores from "@/collections/stores";
 
-import From from "./From";
+import Form from "./Form";
 import APIKeys from "./APIKeys";
 
 const Settings = async () => {
@@ -14,7 +14,7 @@ const Settings = async () => {
                 <Heading title="Settings" description="Manage store settings" />
             </div>
             <Separator />
-            <From store={store} />
+            <Form store={store} />
             <APIKeys />
         </div>
     );

@@ -8,7 +8,7 @@ import { Heading } from "@/components/ui2/typography";
 import categories from "@/collections/categories";
 import billboards from "@/collections/billboards";
 
-import From from "./From";
+import Form from "./Form";
 import Delete from "./Delete";
 
 const Category = async (p: { params: { id: string } }) => {
@@ -32,7 +32,7 @@ const Category = async (p: { params: { id: string } }) => {
                 {!!category && <Delete categoryId={category.id} />}
             </div>
             <Separator />
-            <From category={category} billboards={billboardsList} />
+            <Form category={category} billboards={billboardsList} />
         </div>
     );
 };

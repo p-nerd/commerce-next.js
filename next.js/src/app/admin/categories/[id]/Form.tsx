@@ -23,7 +23,7 @@ const schema = z.object({
     billboardId: z.string(),
 });
 
-const From = (p: { category: TCategory | null; billboards: TBillboard[] }) => {
+const _Form = (p: { category: TCategory | null; billboards: TBillboard[] }) => {
     const { loading, setLoading } = useSpinnerModal();
     const { push, refresh } = useRouter();
 
@@ -105,4 +105,4 @@ const From = (p: { category: TCategory | null; billboards: TBillboard[] }) => {
     );
 };
 
-export default From;
+export default _Form;
