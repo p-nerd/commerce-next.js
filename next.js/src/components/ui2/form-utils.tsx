@@ -10,7 +10,7 @@ export const FormCheckbox = (p: {
             <Checkbox id="terms1" checked={p.checked} onCheckedChange={p.onChange} />
             <label
                 htmlFor="terms1"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="cursor-pointer text-sm font-medium leading-none text-muted-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
                 {p.label}
             </label>

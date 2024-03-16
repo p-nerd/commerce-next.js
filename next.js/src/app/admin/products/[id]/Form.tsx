@@ -14,9 +14,9 @@ import { toast } from "@/components/modals/toast-modal";
 import { useSpinnerModal } from "@/components/modals/spinner-modal";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ImageUpload } from "@/components/ui2/uploads";
@@ -64,7 +64,6 @@ const _Form = (p: {
     const onSubmit = async (values: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            console.log(values);
             if (p.product) {
                 await ajax.patch(`/api/products?id=${p.product.id}`, values);
             } else {
@@ -195,11 +194,12 @@ const _Form = (p: {
                         name="isFeatured"
                         render={({ field }) => (
                             <FormItem>
+                                <FormLabel>Featured</FormLabel>
                                 <FormControl>
                                     <FormCheckbox
                                         checked={field.value}
                                         onChange={field.onChange}
-                                        label="Is Featured"
+                                        label="This product will appear on home page"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -211,11 +211,12 @@ const _Form = (p: {
                         name="isArchived"
                         render={({ field }) => (
                             <FormItem>
+                                <FormLabel>Archived</FormLabel>
                                 <FormControl>
                                     <FormCheckbox
                                         checked={field.value}
                                         onChange={field.onChange}
-                                        label="Is Archived"
+                                        label="This product will not appear on the store"
                                     />
                                 </FormControl>
                                 <FormMessage />
