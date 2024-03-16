@@ -42,7 +42,15 @@ const columns: ColumnDef<TProduct>[] = [
     {
         header: ({ column }) => <DataTableColumnHeader title="Price" column={column} />,
         accessorKey: "price",
-        accessorFn: row => utils.number_formatter.format(row.price.toNumber()),
+        accessorFn: row => utils.number_formatter.format(row.price),
+    },
+    {
+        header: "Category",
+        accessorFn: row => row.category.name,
+    },
+    {
+        header: "Size",
+        accessorFn: row => row.size.name,
     },
     {
         header: "Color",

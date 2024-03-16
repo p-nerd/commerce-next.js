@@ -1,7 +1,4 @@
-import type { TBillboard } from "@/collections/billboards";
-import type { TCategory } from "@/collections/categories";
-import type { TSize } from "@/collections/sizes";
-import type { TColor } from "@/collections/colors";
+import { type Billboard, type Category, type Color, type Product, type Size } from "@prisma/client";
 
 import { faker } from "@faker-js/faker";
 import { prisma } from "@/lib/prisma";
@@ -21,15 +18,15 @@ const log = (message: string) => {
     console.log(`${tag}]${spaces}${split[1]}`);
 };
 
-const random = (array: string[]) => {
-    return Math.floor(Math.random() * array.length);
+const random = <T>(array: T[]) => {
+    return array[Math.floor(Math.random() * array.length)];
 };
 
-const billboards = (count = 10): TBillboard[] => {
+const billboards = (count = 10): Billboard[] => {
     log(`[generate] Generating ${count} billboards...`);
-    const billboards: TBillboard[] = [];
+    const billboards: Billboard[] = [];
     for (let i = 0; i < count; i++) {
-        const billboard: TBillboard = {
+        const billboard: Billboard = {
             id: faker.string.uuid(),
             label: faker.lorem.words(2),
             imageUrl: faker.image.url(),
@@ -43,14 +40,14 @@ const billboards = (count = 10): TBillboard[] => {
     return billboards;
 };
 
-const categories = (count = 10, billboardIDs: string[]): TCategory[] => {
+const categories = (count = 10, billboardIDs: string[]): Category[] => {
     log(`[generate] Generating ${count} categories...`);
-    const categories: TCategory[] = [];
+    const categories: Category[] = [];
     for (let i = 0; i < count; i++) {
-        const category: TCategory = {
+        const category: Category = {
             id: faker.string.uuid(),
             name: faker.lorem.word(),
-            billboardId: billboardIDs[random(billboardIDs)],
+            billboardId: random(billboardIDs),
             createdAt: faker.date.past(),
             updatedAt: faker.date.recent(),
         };
@@ -60,13 +57,13 @@ const categories = (count = 10, billboardIDs: string[]): TCategory[] => {
     return categories;
 };
 
-const sizes = (count = 10): TSize[] => {
+const sizes = (count = 10): Size[] => {
     log(`[generate] Generating ${count} sizes...`);
-    const sizes: TSize[] = [];
+    const sizes: Size[] = [];
     const sizeValues = ["m", "l", "xl", "2xl", "3xl"];
     for (let i = 0; i < count; i++) {
-        const sizeValue = sizeValues[random(sizeValues)];
-        const size: TSize = {
+        const sizeValue = random(sizeValues);
+        const size: Size = {
             id: faker.string.uuid(),
             name: sizeValue.toUpperCase(),
             value: sizeValue,
@@ -75,27 +72,54 @@ const sizes = (count = 10): TSize[] => {
         };
         sizes.push(size);
     }
-    log(`[generate] Generated ${categories.length} sizes`);
+    log(`[generate] Generated ${sizes.length} sizes`);
     return sizes;
 };
 
-const colors = (count = 10): TColor[] => {
+const colors = (count = 10): Color[] => {
     log(`[generate] Generating ${count} colors...`);
-    const sizes: TSize[] = [];
+    const colors: Color[] = [];
     const sizeValues = ["red", "green", "yellow", "blue"];
     for (let i = 0; i < count; i++) {
-        const sizeValue = sizeValues[random(sizeValues)];
-        const size: TSize = {
+        const colorValue = random(sizeValues);
+        const color: Color = {
             id: faker.string.uuid(),
-            name: sizeValue.toUpperCase(),
-            value: sizeValue,
+            name: colorValue.toUpperCase(),
+            value: colorValue,
             createdAt: faker.date.past(),
             updatedAt: faker.date.recent(),
         };
-        sizes.push(size);
+        colors.push(color);
     }
-    log(`[generate] Generated ${categories.length} sizes`);
-    return sizes;
+    log(`[generate] Generated ${colors.length} colors`);
+    return colors;
+};
+
+const products = (
+    count = 10,
+    categoryIDs: string[],
+    sizeIDs: string[],
+    colorIDs: string[],
+): Product[] => {
+    log(`[generate] Generating ${count} products...`);
+    const products: Product[] = [];
+    for (let i = 0; i < count; i++) {
+        const product: Product = {
+            id: faker.string.uuid(),
+            name: faker.lorem.word(),
+            price: random([10.99, 11.99, 20.99, 1.99, 100.99]),
+            createdAt: faker.date.past(),
+            updatedAt: faker.date.recent(),
+            categoryId: random(categoryIDs),
+            sizeId: random(sizeIDs),
+            colorId: random(colorIDs),
+            isFeatured: false,
+            isArchived: false,
+        };
+        products.push(product);
+    }
+    log(`[generate] Generated ${products.length} products`);
+    return products;
 };
 
 log(`[database] Connected to the database`);
@@ -103,6 +127,10 @@ log(`[database] Connected to the database`);
 const main = async () => {
     try {
         console.log(`-----------------------------------------------------------`);
+
+        log(`[delete] Deleting existing records in products table...`);
+        await prisma().product.deleteMany();
+        log(`[delete] Deleted records in products table`);
 
         log(`[delete] Deleting existing records in categories table...`);
         await prisma().category.deleteMany();
@@ -140,6 +168,13 @@ const main = async () => {
         log(`[create] Adding new colors data...`);
         await prisma().color.createMany({ data: colors(10) });
         log(`[create] Added colors data`);
+
+        log(`[create] Adding new products data...`);
+        const categoryIDs = (await prisma().category.findMany()).map(x => x.id);
+        const sizeIDs = (await prisma().size.findMany()).map(x => x.id);
+        const colorIDs = (await prisma().color.findMany()).map(x => x.id);
+        await prisma().product.createMany({ data: products(100, categoryIDs, sizeIDs, colorIDs) });
+        log(`[create] Added products data`);
 
         console.log(`-----------------------------------------------------------`);
     } catch (error: any) {
