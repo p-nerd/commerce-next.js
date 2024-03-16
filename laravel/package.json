@@ -1,9 +1,11 @@
 {
     "private": true,
     "type": "module",
+    "license": "MIT",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build"
+        "build": "tsc && vite build",
+        "shadcn-ui": "shadcn-ui"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -19,8 +21,17 @@
         "postcss": "^8.4.31",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "shadcn-ui": "^0.8.0",
         "tailwindcss": "^3.2.1",
         "typescript": "^5.0.2",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "@radix-ui/react-slot": "^1.0.2",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.0",
+        "lucide-react": "^0.358.0",
+        "tailwind-merge": "^2.2.1",
+        "tailwindcss-animate": "^1.0.7"
     }
 }
