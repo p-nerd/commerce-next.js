@@ -6,6 +6,9 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui2/typography";
 
 import products from "@/collections/products";
+import categories from "@/collections/categories";
+import colors from "@/collections/colors";
+import sizes from "@/collections/sizes";
 
 import Form from "./Form";
 import Delete from "./Delete";
@@ -19,6 +22,8 @@ const Product = async (p: { params: { id: string } }) => {
         }
     }
 
+    console.log(product);
+
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between">
@@ -29,7 +34,12 @@ const Product = async (p: { params: { id: string } }) => {
                 {!!product && <Delete productId={product.id} />}
             </div>
             <Separator />
-            <Form product={product} />
+            <Form
+                product={product}
+                categories={await categories.finds()}
+                sizes={await sizes.finds()}
+                colors={await colors.finds()}
+            />
         </div>
     );
 };

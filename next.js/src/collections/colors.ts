@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export type TColor = Color;
 
-const sizes = {
+const colors = {
     find: async (id: string): Promise<TColor | null> => {
         return await prisma().color.findFirst({ where: { id } });
     },
@@ -17,4 +17,4 @@ const sizes = {
     },
 };
 
-export default sizes;
+export default colors;

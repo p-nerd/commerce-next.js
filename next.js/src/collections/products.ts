@@ -1,11 +1,16 @@
-import type { Product } from "@prisma/client";
+import type { Image, Product } from "@prisma/client";
 import type { TSize } from "./sizes";
 import type { TColor } from "./colors";
 import type { TCategory } from "./categories";
 
 import { prisma } from "@/lib/prisma";
 
-export type TProduct = Product & { category: TCategory; size: TSize; color: TColor };
+export type TProduct = Product & {
+    category: TCategory;
+    size: TSize;
+    color: TColor;
+    images: Image[];
+};
 
 const products = {
     find: async (id: string): Promise<TProduct | null> => {
@@ -18,6 +23,7 @@ const products = {
                 },
                 size: true,
                 color: true,
+                images: true,
             },
             where: { id },
         });
@@ -32,6 +38,7 @@ const products = {
                 },
                 size: true,
                 color: true,
+                images: true,
             },
             orderBy: {
                 createdAt: "desc",

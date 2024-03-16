@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -8,6 +9,10 @@ import { StoreIcon } from "lucide-react";
 
 import Link from "next/link";
 import Links from "./Links";
+
+export const metadata: Metadata = {
+    title: "Commerce Admin",
+};
 
 const Layout = async (p: { children: ReactNode }) => {
     return (

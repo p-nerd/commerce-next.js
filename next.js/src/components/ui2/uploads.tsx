@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const ImageUpload = (p: {
+    urls: string[];
     disabled?: boolean;
     onDone: (url: string) => void;
     onDelete: (url: string) => void;
-    urls: string[];
 }) => {
     return (
         <div>

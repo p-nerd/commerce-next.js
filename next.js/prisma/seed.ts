@@ -1,4 +1,4 @@
-import { type Billboard, type Category, type Color, type Product, type Size } from "@prisma/client";
+import type { Image, Billboard, Category, Color, Product, Size } from "@prisma/client";
 
 import { faker } from "@faker-js/faker";
 import { prisma } from "@/lib/prisma";
@@ -122,11 +122,33 @@ const products = (
     return products;
 };
 
+const images = (count = 10, productIDs: string[]): Image[] => {
+    log(`[generate] Generating ${count} images...`);
+    const images: Image[] = [];
+    for (let i = 0; i < count; i++) {
+        const image: Image = {
+            id: faker.string.uuid(),
+            name: faker.lorem.word(),
+            path: faker.image.url(),
+            productId: random(productIDs),
+            createdAt: faker.date.past(),
+            updatedAt: faker.date.recent(),
+        };
+        images.push(image);
+    }
+    log(`[generate] Generated ${images.length} images`);
+    return images;
+};
+
 log(`[database] Connected to the database`);
 
 const main = async () => {
     try {
         console.log(`-----------------------------------------------------------`);
+
+        log(`[delete] Deleting existing records in images table...`);
+        await prisma().image.deleteMany();
+        log(`[delete] Deleted records in images table`);
 
         log(`[delete] Deleting existing records in products table...`);
         await prisma().product.deleteMany();
@@ -175,6 +197,11 @@ const main = async () => {
         const colorIDs = (await prisma().color.findMany()).map(x => x.id);
         await prisma().product.createMany({ data: products(100, categoryIDs, sizeIDs, colorIDs) });
         log(`[create] Added products data`);
+
+        log(`[create] Adding new images data...`);
+        const productIDs = (await prisma().product.findMany()).map(x => x.id);
+        await prisma().image.createMany({ data: images(300, productIDs) });
+        log(`[create] Added images data`);
 
         console.log(`-----------------------------------------------------------`);
     } catch (error: any) {

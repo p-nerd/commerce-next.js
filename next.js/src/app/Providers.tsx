@@ -14,7 +14,7 @@ const Providers = () => {
     }, []);
 
     if (!mounded) {
-        return null;
+        return <></>;
     }
 
     return (

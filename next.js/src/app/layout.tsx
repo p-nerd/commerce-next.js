@@ -13,7 +13,7 @@ import Providers from "./Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Admin - Commerce",
+    title: "Commerce",
 };
 
 const Layout = (p: Readonly<{ children: ReactNode }>) => {
