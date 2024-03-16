@@ -45,6 +45,11 @@ const products = {
             },
         });
     },
+    removeByProductID: async (productId: string) => {
+        return prisma().product.delete({
+            where: { id: productId },
+        });
+    },
 };
 
 export default products;

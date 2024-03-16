@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 import images from "@/collections/images";
+import products from "@/collections/products";
 
 type TPostOrPatchBody = {
     name: string;
@@ -18,36 +19,28 @@ type TPostOrPatchBody = {
 
 export const POST = async (request: NextRequest) => {
     try {
-        const {
-            images: imagesData,
-            name,
-            price,
-            categoryId,
-            colorId,
-            sizeId,
-            isFeatured,
-            isArchived,
-        } = (await request.json()) as TPostOrPatchBody;
-        if (!name) return errorResponse("Name is required", 400);
-        if (!price) return errorResponse("Price is required", 400);
-        if (!categoryId) return errorResponse("Category is required", 400);
-        if (!colorId) return errorResponse("Color is required", 400);
-        if (!sizeId) return errorResponse("SizeId is required", 400);
+        const body = (await request.json()) as TPostOrPatchBody;
+
+        if (!body.name) return errorResponse("Name is required", 400);
+        if (!body.price) return errorResponse("Price is required", 400);
+        if (!body.categoryId) return errorResponse("Category is required", 400);
+        if (!body.colorId) return errorResponse("Color is required", 400);
+        if (!body.sizeId) return errorResponse("SizeId is required", 400);
 
         const product = await prisma().product.create({
             data: {
-                name,
-                price: Number(price),
-                categoryId,
-                colorId,
-                sizeId,
-                isFeatured,
-                isArchived,
+                name: body.name,
+                price: Number(body.price),
+                categoryId: body.categoryId,
+                colorId: body.colorId,
+                sizeId: body.sizeId,
+                isFeatured: body.isFeatured,
+                isArchived: body.isArchived,
             },
         });
 
         await images.creates(
-            imagesData.map(image => ({
+            body.images.map(image => ({
                 name: image.name,
                 path: image.path,
                 productId: product.id,
@@ -68,52 +61,37 @@ export const PATCH = async (request: NextRequest) => {
             return errorResponse("id param is required", 400);
         }
 
-        const {
-            images: imagesData,
-            name,
-            price,
-            categoryId,
-            colorId,
-            sizeId,
-            isFeatured,
-            isArchived,
-        } = (await request.json()) as TPostOrPatchBody;
-        if (!name) return errorResponse("Name is required", 400);
-        if (!price) return errorResponse("Price is required", 400);
-        if (!categoryId) return errorResponse("Category is required", 400);
-        if (!colorId) return errorResponse("Color is required", 400);
-        if (!sizeId) return errorResponse("SizeId is required", 400);
+        const body = (await request.json()) as TPostOrPatchBody;
+
+        if (!body.name) return errorResponse("Name is required", 400);
+        if (!body.price) return errorResponse("Price is required", 400);
+        if (!body.categoryId) return errorResponse("Category is required", 400);
+        if (!body.colorId) return errorResponse("Color is required", 400);
+        if (!body.sizeId) return errorResponse("SizeId is required", 400);
 
         const product = await prisma().product.update({
             where: { id: productId },
             data: {
-                name,
-                price: Number(price),
-                categoryId,
-                colorId,
-                sizeId,
-                isFeatured,
-                isArchived,
+                name: body.name,
+                price: Number(body.price),
+                categoryId: body.categoryId,
+                colorId: body.colorId,
+                sizeId: body.sizeId,
+                isFeatured: body.isFeatured,
+                isArchived: body.isArchived,
             },
             include: {
                 images: true,
             },
         });
 
-        const newImages = imagesData.filter(image => !image.id);
-        const newImagesPromices = images.creates(
-            newImages.map(image => ({
-                name: image.name,
-                path: image.path,
-                productId: product.id,
-            })),
-        );
-        const removeableImages = product.images.filter(
-            image => !imagesData.find(i => i.id === image.id),
-        );
-        const removeImagesPromices = images.removes(removeableImages.map(image => image.id));
+        const newImages = body.images.filter(image => !image.id);
+        const removeImages = product.images.filter(i => !body.images.find(i2 => i.id === i2.id));
 
-        await Promise.all([newImagesPromices, removeImagesPromices]);
+        await Promise.allSettled([
+            images.creates(newImages.map(({ name, path }) => ({ name, path, productId }))),
+            images.removesByImageIDs(removeImages.map(image => image.id)),
+        ]);
 
         return NextResponse.json(product);
     } catch (e: any) {
@@ -129,7 +107,8 @@ export const DELETE = async (request: NextRequest) => {
             return errorResponse("id param is required", 400);
         }
 
-        await prisma().product.delete({ where: { id: productId } });
+        await images.removesByProductID(productId);
+        await products.removeByProductID(productId);
 
         return NextResponse.json({ id: "product deleted" });
     } catch (e: any) {

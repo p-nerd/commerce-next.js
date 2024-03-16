@@ -7,23 +7,32 @@ export type TImage = Image;
 const images = {
     creates: async (
         images: { name: string; path: string; productId: string }[],
-    ): Promise<TImage[]> => {
-        const imagePromises = images?.map(image =>
-            prisma().image.create({
-                data: {
-                    name: image.name,
-                    path: image.path,
-                    productId: image.productId,
-                },
-            }),
+    ): Promise<PromiseSettledResult<TImage>[]> => {
+        return await Promise.allSettled(
+            images?.map(image =>
+                prisma().image.create({
+                    data: {
+                        name: image.name,
+                        path: image.path,
+                        productId: image.productId,
+                    },
+                }),
+            ),
         );
-        return await Promise.all(imagePromises);
     },
-    removes: async (imageIDs: string[]) => {
-        const imagePromises = imageIDs.map(imageId =>
-            prisma().image.delete({ where: { id: imageId } }),
+    removesByImageIDs: async (imageIDs: string[]): Promise<PromiseSettledResult<TImage>[]> => {
+        return await Promise.allSettled(
+            imageIDs.map(imageId =>
+                prisma().image.delete({
+                    where: { id: imageId },
+                }),
+            ),
         );
-        return await Promise.all(imagePromises);
+    },
+    removesByProductID: async (productId: string) => {
+        return prisma().image.deleteMany({
+            where: { productId },
+        });
     },
 };
 
