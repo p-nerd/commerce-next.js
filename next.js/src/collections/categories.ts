@@ -24,6 +24,16 @@ const categories = {
             },
         });
     },
+    findsWithoutBillboard: async (): Promise<Category[]> => {
+        return await prisma().category.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+            include: {
+                billboard: false,
+            },
+        });
+    },
 };
 
 export default categories;

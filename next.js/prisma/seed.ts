@@ -175,12 +175,12 @@ const main = async () => {
         console.log(`-----------------------------------------------------------`);
 
         log(`[create] Adding new billboards data...`);
-        await prisma().billboard.createMany({ data: billboards(100) });
+        await prisma().billboard.createMany({ data: billboards(10) });
         log(`[create] Added billboards data`);
 
         log(`[create] Adding new categories data...`);
         const billboardIDs = (await prisma().billboard.findMany()).map(b => b.id);
-        await prisma().category.createMany({ data: categories(100, billboardIDs) });
+        await prisma().category.createMany({ data: categories(6, billboardIDs) });
         log(`[create] Added categories data`);
 
         log(`[create] Adding new sizes data...`);

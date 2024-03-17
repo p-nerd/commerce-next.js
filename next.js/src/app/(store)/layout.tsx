@@ -1,10 +1,26 @@
-import { Container } from "@/components/ui2/container";
 import type { ReactNode } from "react";
 
-const Navbar = () => {
+import { Container } from "@/components/ui2/container";
+
+import categories from "@/collections/categories";
+
+import Link from "next/link";
+import Links from "./Links";
+import Cart from "./Cart";
+
+const Navbar = async () => {
+    const categoriesList = await categories.findsWithoutBillboard();
     return (
         <nav className="border-b">
-            <Container>Nav</Container>
+            <Container className="relative flex h-16 items-center gap-4 px-4 sm:px-6 lg:px-8">
+                <Link href="/" className="text-xl font-bold">
+                    Commerce
+                </Link>
+                <Links categories={categoriesList.map(({ name, id }) => ({ name, id }))} />
+                <div className="flex w-full justify-end">
+                    <Cart />
+                </div>
+            </Container>
         </nav>
     );
 };
