@@ -8,6 +8,10 @@ import billboards from "@/collections/billboards";
 import Link from "next/link";
 import Table from "./Table";
 
+export const metadata = {
+    title: "Billboards - Commerce Admin",
+};
+
 const Billboards = async () => {
     const billboardsList = await billboards.finds();
     return (

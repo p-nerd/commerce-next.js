@@ -11,7 +11,7 @@ import { getPaginationRowModel, getSortedRowModel, useReactTable } from "@tansta
 import { toast } from "@/components/modals/toast-modal";
 import { useDeleteModal } from "@/components/modals/delete-modal";
 
-import { CopyIcon, DeleteIcon, EditIcon } from "lucide-react";
+import { CopyIcon, DeleteIcon } from "lucide-react";
 import { DataTable, DataTableRowActions, DataTableColumnHeader } from "@/components/ui2/data-table";
 import { DataTableColumnToggle, DataTableSelectRowCheckbox } from "@/components/ui2/data-table";
 import { DataTablePagination, DataTableFilters } from "@/components/ui2/data-table";
@@ -47,6 +47,10 @@ const useDeleteOrder = () => {
     return { pending, deleteOrder };
 };
 
+const calOrderTotalPrice = (order: TOrder) => {
+    return order.orderItems.reduce((sum, orderItem) => sum + orderItem.product.price, 0);
+};
+
 const columns: ColumnDef<TOrder>[] = [
     {
         id: "select",
@@ -64,11 +68,10 @@ const columns: ColumnDef<TOrder>[] = [
         accessorKey: "phone",
     },
     {
-        header: "Total Price",
-        accessorFn: row =>
-            utils.number_formatter.format(
-                row.orderItems.reduce((sum, orderItem) => sum + orderItem.product.price, 0),
-            ),
+        accessorKey: "id",
+        header: ({ column }) => <DataTableColumnHeader title="Total Price" column={column} />,
+        accessorFn: order => utils.number_formatter.format(calOrderTotalPrice(order)),
+        sortingFn: (a, b) => calOrderTotalPrice(a.original) - calOrderTotalPrice(b.original),
     },
     {
         header: ({ column }) => <DataTableColumnHeader title="Is Paid" column={column} />,
@@ -86,7 +89,7 @@ const columns: ColumnDef<TOrder>[] = [
         cell: function Actions({ row }) {
             const order = row.original;
 
-            const { push, refresh } = useRouter();
+            const { refresh } = useRouter();
             const { pending, deleteOrder } = useDeleteOrder();
 
             return (
@@ -96,11 +99,6 @@ const columns: ColumnDef<TOrder>[] = [
                             label: "Copy ID",
                             onClick: () => utils.copy(order.id, "Order ID"),
                             icon: CopyIcon,
-                        },
-                        {
-                            label: "Edit",
-                            onClick: () => push(`/admin/orders/${order.id}`),
-                            icon: EditIcon,
                         },
                         {
                             label: "Delete",

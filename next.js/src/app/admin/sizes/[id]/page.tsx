@@ -10,6 +10,10 @@ import sizes from "@/collections/sizes";
 import Form from "./Form";
 import Delete from "./Delete";
 
+export const metadata = {
+    title: "Size - Commerce Admin",
+};
+
 const Size = async (p: { params: { id: string } }) => {
     let size: TSize | null = null;
     if (p.params.id !== "new") {

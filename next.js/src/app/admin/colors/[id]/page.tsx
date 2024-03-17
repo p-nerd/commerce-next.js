@@ -10,6 +10,10 @@ import colors from "@/collections/colors";
 import Form from "./Form";
 import Delete from "./Delete";
 
+export const metadata = {
+    title: "Color - Commerce Admin",
+};
+
 const Color = async (p: { params: { id: string } }) => {
     let color: TColor | null = null;
     if (p.params.id !== "new") {

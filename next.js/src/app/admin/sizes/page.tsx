@@ -8,6 +8,10 @@ import sizes from "@/collections/sizes";
 import Link from "next/link";
 import Table from "./Table";
 
+export const metadata = {
+    title: "Sizes - Commerce Admin",
+};
+
 const Sizes = async () => {
     const sizesList = await sizes.finds();
     return (

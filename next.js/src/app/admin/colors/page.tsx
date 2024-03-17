@@ -8,6 +8,10 @@ import colors from "@/collections/colors";
 import Link from "next/link";
 import Table from "./Table";
 
+export const metadata = {
+    title: "Colors - Commerce Admin",
+};
+
 const Colors = async () => {
     const colorsList = await colors.finds();
 

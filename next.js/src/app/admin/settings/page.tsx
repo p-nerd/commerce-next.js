@@ -6,6 +6,10 @@ import stores from "@/collections/stores";
 import Form from "./Form";
 import APIKeys from "./APIKeys";
 
+export const metadata = {
+    title: "Settings - Commerce Admin",
+};
+
 const Settings = async () => {
     const store = await stores.findFirstOne();
     return (

@@ -8,6 +8,10 @@ import categories from "@/collections/categories";
 import Link from "next/link";
 import Table from "./Table";
 
+export const metadata = {
+    title: "Categories - Commerce Admin",
+};
+
 const Categories = async () => {
     const categoriesList = await categories.finds();
     return (

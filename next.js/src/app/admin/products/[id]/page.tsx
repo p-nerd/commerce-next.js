@@ -13,6 +13,10 @@ import sizes from "@/collections/sizes";
 import Form from "./Form";
 import Delete from "./Delete";
 
+export const metadata = {
+    title: "Product - Commerce Admin",
+};
+
 const Product = async (p: { params: { id: string } }) => {
     let product: TProduct | null = null;
     if (p.params.id !== "new") {

@@ -10,6 +10,10 @@ import billboards from "@/collections/billboards";
 import Form from "./Form";
 import Delete from "./Delete";
 
+export const metadata = {
+    title: "Billboard - Commerce Admin",
+};
+
 const Billboard = async (p: { params: { id: string } }) => {
     let billboard: TBillboard | null = null;
     if (p.params.id !== "new") {

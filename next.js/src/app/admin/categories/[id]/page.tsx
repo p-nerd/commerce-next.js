@@ -11,6 +11,10 @@ import billboards from "@/collections/billboards";
 import Form from "./Form";
 import Delete from "./Delete";
 
+export const metadata = {
+    title: "Category - Commerce Admin",
+};
+
 const Category = async (p: { params: { id: string } }) => {
     let category: TCategory | null = null;
     if (p.params.id !== "new") {
