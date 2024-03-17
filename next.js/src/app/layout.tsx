@@ -1,6 +1,5 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { dark } from "@clerk/themes";
@@ -11,10 +10,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "./Providers";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-    title: "Commerce",
-};
 
 const Layout = (p: Readonly<{ children: ReactNode }>) => {
     return (
