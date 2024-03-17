@@ -1,14 +1,18 @@
-"use client";
+import { buttonVariants } from "@/components/ui/button";
 
-import type { TProduct } from "@/collections/products";
+import { Plus } from "lucide-react";
+import { Heading } from "@/components/ui2/typography";
+
+import { TBillboard } from "@/types/models";
+import { Link, router } from "@inertiajs/react";
+
 import type { ColumnDef, ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import type { VisibilityState } from "@tanstack/react-table";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { getCoreRowModel, getFilteredRowModel } from "@tanstack/react-table";
 import { getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { useDeleteProduct } from "./[id]/Delete";
+import { useDeleteBillboard } from "@/hooks/delete-hooks";
 
 import { CopyIcon, DeleteIcon, EditIcon } from "lucide-react";
 import { DataTable, DataTableRowActions, DataTableColumnHeader } from "@/components/ui2/data-table";
@@ -19,7 +23,7 @@ import { DataTableSelectAllCheckbox } from "@/components/ui2/data-table";
 import time from "@/helpers/time";
 import utils from "@/helpers/utils";
 
-const columns: ColumnDef<TProduct>[] = [
+const columns: ColumnDef<TBillboard>[] = [
     {
         id: "select",
         header: ({ table }) => <DataTableSelectAllCheckbox table={table} />,
@@ -28,42 +32,8 @@ const columns: ColumnDef<TProduct>[] = [
         enableHiding: false,
     },
     {
-        header: ({ column }) => <DataTableColumnHeader title="Name" column={column} />,
-        accessorKey: "name",
-    },
-    {
-        header: ({ column }) => <DataTableColumnHeader title="Featured" column={column} />,
-        accessorKey: "isFeatured",
-    },
-    {
-        header: ({ column }) => <DataTableColumnHeader title="Archived" column={column} />,
-        accessorKey: "isArchived",
-    },
-    {
-        header: ({ column }) => <DataTableColumnHeader title="Price" column={column} />,
-        accessorKey: "price",
-        accessorFn: row => utils.number_formatter.format(row.price),
-    },
-    {
-        header: "Category",
-        accessorFn: row => row.category.name,
-    },
-    {
-        header: "Size",
-        accessorFn: row => row.size.name,
-    },
-    {
-        header: "Color",
-        accessorKey: "color",
-        cell: ({ row }) => (
-            <div className="flex items-center gap-1">
-                <div
-                    className="h-6 w-6 rounded-full border border-gray-200 dark:border-gray-800"
-                    style={{ backgroundColor: row.original.color.value }}
-                ></div>
-                <div>{row.original.color.value}</div>
-            </div>
-        ),
+        header: ({ column }) => <DataTableColumnHeader title="Label" column={column} />,
+        accessorKey: "label",
     },
     {
         header: ({ column }) => <DataTableColumnHeader title="Date" column={column} />,
@@ -72,33 +42,37 @@ const columns: ColumnDef<TProduct>[] = [
         accessorFn: row => time.format.day_month_year(row.createdAt),
     },
     {
+        header: ({ column }) => <DataTableColumnHeader title="Status" column={column} />,
+        accessorKey: "status",
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: function Actions({ row }) {
-            const product = row.original;
+            const billboard = row.original;
 
-            const { push, refresh } = useRouter();
-            const { pending, deleteProduct } = useDeleteProduct();
+            const { visit, reload } = router;
+            const { pending, deleteBillboard } = useDeleteBillboard();
 
             return (
                 <DataTableRowActions
                     actions={[
                         {
                             label: "Copy ID",
-                            onClick: () => utils.copy(product.id, "Billboard ID"),
+                            onClick: () => utils.copy(billboard.id, "Billboard ID"),
                             icon: CopyIcon,
                         },
                         {
                             label: "Edit",
-                            onClick: () => push(`/admin/products/${product.id}`),
+                            onClick: () => visit(`/admin/billboards/${billboard.id}`),
                             icon: EditIcon,
                         },
                         {
                             label: "Delete",
                             onClick: () =>
-                                deleteProduct({
-                                    productId: product.id,
-                                    onAfterDelete: () => refresh(),
+                                deleteBillboard({
+                                    billboardId: billboard.id,
+                                    onAfterDelete: () => reload(),
                                 }),
                             icon: DeleteIcon,
                             disabled: pending,
@@ -110,14 +84,14 @@ const columns: ColumnDef<TProduct>[] = [
     },
 ];
 
-const Table = (p: { products: TProduct[] }) => {
+const Table = (p: { billboards: TBillboard[] }) => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
 
     const table = useReactTable({
-        data: p.products,
+        data: p.billboards,
         columns: columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -138,7 +112,7 @@ const Table = (p: { products: TProduct[] }) => {
     return (
         <div className="flex w-full flex-col gap-5">
             <div className="flex items-center gap-2">
-                <DataTableFilters table={table} placeholder="Filters name..." column="name" />
+                <DataTableFilters table={table} placeholder="Filters label..." column="label" />
                 <DataTableColumnToggle table={table} />
             </div>
             <DataTable table={table} />
@@ -147,4 +121,24 @@ const Table = (p: { products: TProduct[] }) => {
     );
 };
 
-export default Table;
+const Billboards = async (p: { billboards: TBillboard }) => {
+    return (
+        <div className="flex-1 space-y-4 p-8 pt-6">
+            <div className="flex flex-col space-y-8 overflow-hidden rounded-[0.5rem] border bg-background p-8 shadow-md md:shadow-xl">
+                <div className="flex items-center justify-between">
+                    <Heading
+                        title={`Billboards (${p.billboards.length})`}
+                        description="Manage billboards for your store"
+                    />
+                    <Link href="/admin/billboards/new" className={buttonVariants()}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add New
+                    </Link>
+                </div>
+                <Table billboards={p.billboards} />
+            </div>
+        </div>
+    );
+};
+
+export default Billboards;

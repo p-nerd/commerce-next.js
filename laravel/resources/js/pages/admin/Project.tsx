@@ -1,26 +1,25 @@
-"use client";
-
-import type { TProduct } from "@/collections/products";
-import type { TCategory } from "@/collections/categories";
-import type { TColor } from "@/collections/colors";
-import type { TSize } from "@/collections/sizes";
+import type { TCategory, TColor, TProduct, TSize } from "@/types/models";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ajax } from "@/lib/ajax";
-import { useRouter } from "next/navigation";
 import { toast } from "@/components/modals/toast-modal";
 import { useSpinnerModal } from "@/components/modals/spinner-modal";
+import { useDeleteProduct } from "@/hooks/delete-hooks";
+import { router } from "@inertiajs/react";
 
+import { Trash } from "lucide-react";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { ImageUpload } from "@/components/ui2/uploads";
 import { FormCheckbox } from "@/components/ui2/form-utils";
+import { Heading } from "@/components/ui2/typography";
 
 const schema = z.object({
     name: z.string().min(1),
@@ -40,14 +39,14 @@ const _Form = (p: {
     sizes: TSize[];
 }) => {
     const { loading, setLoading } = useSpinnerModal();
-    const { push, refresh } = useRouter();
+    const { visit, reload } = router;
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
             name: p.product?.name,
             images:
-                p.product?.images.map(image => ({
+                p.product?.images.map((image: any) => ({
                     id: image.id,
                     name: image.name,
                     path: image.path,
@@ -68,9 +67,9 @@ const _Form = (p: {
                 await ajax.patch(`/api/products?id=${p.product.id}`, values);
             } else {
                 await ajax.post(`/api/products`, values);
-                push(`/admin/products`);
+                visit(`/admin/products`);
             }
-            refresh();
+            reload();
             toast.success(p.product ? "Product updated" : "Product created");
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error?.message || "Something went wrong");
@@ -256,4 +255,56 @@ const _Form = (p: {
     );
 };
 
-export default _Form;
+const Delete = (p: { productId: string }) => {
+    const { visit, reload } = router;
+    const { pending, deleteProduct } = useDeleteProduct();
+
+    return (
+        <>
+            <Button
+                disabled={pending}
+                variant="destructive"
+                size="sm"
+                onClick={() =>
+                    deleteProduct({
+                        productId: p.productId,
+                        onAfterDelete: () => {
+                            visit("/admin/products");
+                            reload();
+                        },
+                    })
+                }
+            >
+                <Trash className="h-4 w-4" />
+            </Button>
+        </>
+    );
+};
+
+const Product = async (p: {
+    product: TProduct | null;
+    categories: any;
+    sizes: any;
+    colors: any;
+}) => {
+    return (
+        <div className="flex-1 space-y-4 p-8 pt-6">
+            <div className="flex items-center justify-between">
+                <Heading
+                    title={p.product ? "Edit Product" : "Create Product"}
+                    description={p.product ? "Edit a existing product" : "Create a new product"}
+                />
+                {!!p.product && <Delete productId={p.product.id} />}
+            </div>
+            <Separator />
+            <_Form
+                product={p.product}
+                categories={p.categories}
+                sizes={p.sizes}
+                colors={p.colors}
+            />
+        </div>
+    );
+};
+
+export default Product;
