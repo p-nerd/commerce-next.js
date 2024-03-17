@@ -36,6 +36,10 @@ const Links = (p: HTMLAttributes<HTMLElement>) => {
             label: "Products",
         },
         {
+            href: "/admin/orders",
+            label: "Orders",
+        },
+        {
             href: "/admin/settings",
             label: "Settings",
         },

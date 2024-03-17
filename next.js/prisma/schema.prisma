@@ -29,6 +29,11 @@ model Billboard {
   categories Category[]
 }
 
+enum Status {
+  active
+  inactive
+}
+
 model Category {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -73,7 +78,7 @@ model Product {
   updatedAt DateTime @updatedAt
 
   name       String
-  price      Float 
+  price      Float
   isFeatured Boolean @default(false)
   isArchived Boolean @default(false)
 
@@ -85,7 +90,8 @@ model Product {
   size     Size     @relation(fields: [sizeId], references: [id])
   color    Color    @relation(fields: [colorId], references: [id])
 
-  images Image[]
+  images     Image[]
+  orderItems OrderItem[]
 
   @@index([categoryId])
   @@index([sizeId])
@@ -107,7 +113,29 @@ model Image {
   @@index([productId])
 }
 
-enum Status {
-  active
-  inactive
+model Order {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isPaid  Boolean @default(false)
+  phone   String  @default("")
+  address String  @default("")
+
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId   String
+  productId String
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
 }
