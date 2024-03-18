@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+
 import { Container } from "@/components/ui2/container";
+
 import billboards from "@/collections/billboards";
+
 import Billboards from "./Billboards";
 
 export const metadata: Metadata = {
@@ -8,13 +11,11 @@ export const metadata: Metadata = {
 };
 
 const Home = async () => {
-    const billboardsList = await billboards.finds();
+    const bList = await billboards.finds();
 
     return (
-        <Container>
-            <div className="space-y-10 pb-10">
-                <Billboards billboards={billboardsList} />
-            </div>
+        <Container className="space-y-10 pb-10">
+            <Billboards data={bList.map(({ id, label, imageUrl }) => ({ id, label, imageUrl }))} />
         </Container>
     );
 };

@@ -47,6 +47,7 @@ const categories = (count = 10, billboardIDs: string[]): Category[] => {
         const category: Category = {
             id: faker.string.uuid(),
             name: faker.lorem.word(),
+            description: faker.lorem.words(),
             billboardId: random(billboardIDs),
             createdAt: faker.date.past(),
             updatedAt: faker.date.recent(),

@@ -40,6 +40,7 @@ model Category {
   updatedAt DateTime @updatedAt
 
   name String
+  description String
 
   billboardId String
 

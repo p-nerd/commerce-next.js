@@ -5,8 +5,8 @@ import { Container } from "@/components/ui2/container";
 import categories from "@/collections/categories";
 
 import Link from "next/link";
-import Links from "./Links";
 import Cart from "./Cart";
+import CategoriesLinks from "./CategoriesLinks";
 
 const Navbar = async () => {
     const categoriesList = await categories.findsWithoutBillboard();
@@ -16,7 +16,13 @@ const Navbar = async () => {
                 <Link href="/" className="text-xl font-bold">
                     Commerce
                 </Link>
-                <Links categories={categoriesList.map(({ name, id }) => ({ name, id }))} />
+                <CategoriesLinks
+                    data={categoriesList.map(({ id, name, description }) => ({
+                        id,
+                        name,
+                        description,
+                    }))}
+                />
                 <div className="flex w-full justify-end">
                     <Cart />
                 </div>
