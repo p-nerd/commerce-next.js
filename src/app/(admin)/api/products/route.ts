@@ -108,7 +108,7 @@ export const DELETE = async (request: NextRequest) => {
         }
 
         await images.removesByProductID(productId);
-        await products.removeByProductID(productId);
+        await products.remove(productId);
 
         return NextResponse.json({ id: "product deleted" });
     } catch (e: any) {

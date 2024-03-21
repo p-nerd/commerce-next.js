@@ -1,7 +1,8 @@
-import type { Image, Product } from "@prisma/client";
 import type { TSize } from "./sizes";
 import type { TColor } from "./colors";
 import type { TCategory } from "./categories";
+import type { Image, Product } from "@prisma/client";
+import type { TProductCardData } from "@/components/pisces/ProductCard";
 
 import { prisma } from "@/lib/prisma";
 
@@ -45,7 +46,46 @@ const products = {
             },
         });
     },
-    removeByProductID: async (productId: string) => {
+    findsForProductCard: async (options?: {
+        isFeatured?: boolean;
+        categoryId?: string;
+        take?: number;
+    }): Promise<TProductCardData[]> => {
+        const where: { [key: string]: any } = {};
+
+        if (options?.isFeatured) {
+            where.isFeatured = true;
+        }
+        if (options?.categoryId) {
+            where.categoryId = options.categoryId;
+        }
+
+        return await prisma().product.findMany({
+            select: {
+                id: true,
+                images: {
+                    select: {
+                        name: true,
+                        path: true,
+                    },
+                    take: 1,
+                },
+                name: true,
+                price: true,
+                category: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+            where,
+            orderBy: {
+                createdAt: "desc",
+            },
+            take: options?.take,
+        });
+    },
+    remove: async (productId: string) => {
         return prisma().product.delete({
             where: { id: productId },
         });

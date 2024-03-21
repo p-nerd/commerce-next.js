@@ -123,19 +123,29 @@ const products = (
     return products;
 };
 
+const fake_image = (productId: string): Image => {
+    return {
+        id: faker.string.uuid(),
+        name: faker.lorem.word(),
+        path: faker.image.url(),
+        productId: productId,
+        createdAt: faker.date.past(),
+        updatedAt: faker.date.recent(),
+    };
+};
+
+const one_images_to_every_products = (productIDs: string[]): Image[] => {
+    log(`[generate] Generating images for every products...`);
+    const images: Image[] = productIDs.map(productId => fake_image(productId));
+    log(`[generate] Generated images for every products`);
+    return images;
+};
+
 const images = (count = 10, productIDs: string[]): Image[] => {
     log(`[generate] Generating ${count} images...`);
     const images: Image[] = [];
     for (let i = 0; i < count; i++) {
-        const image: Image = {
-            id: faker.string.uuid(),
-            name: faker.lorem.word(),
-            path: faker.image.url(),
-            productId: random(productIDs),
-            createdAt: faker.date.past(),
-            updatedAt: faker.date.recent(),
-        };
-        images.push(image);
+        images.push(fake_image(random(productIDs)));
     }
     log(`[generate] Generated ${images.length} images`);
     return images;
@@ -197,11 +207,12 @@ const main = async () => {
         const sizeIDs = (await prisma().size.findMany()).map(x => x.id);
         const colorIDs = (await prisma().color.findMany()).map(x => x.id);
         await prisma().product.createMany({ data: products(100, categoryIDs, sizeIDs, colorIDs) });
+        const productIDs = (await prisma().product.findMany()).map(x => x.id);
+        await prisma().image.createMany({ data: one_images_to_every_products(productIDs) });
         log(`[create] Added products data`);
 
         log(`[create] Adding new images data...`);
-        const productIDs = (await prisma().product.findMany()).map(x => x.id);
-        await prisma().image.createMany({ data: images(300, productIDs) });
+        await prisma().image.createMany({ data: images(200, productIDs) });
         log(`[create] Added images data`);
 
         console.log(`-----------------------------------------------------------`);

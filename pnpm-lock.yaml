@@ -11,6 +11,9 @@ dependencies:
   '@clerk/themes':
     specifier: ^1.7.10
     version: 1.7.10(react@18.2.0)
+  '@headlessui/react':
+    specifier: ^1.7.18
+    version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
   '@hookform/resolvers':
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.51.0)
@@ -631,6 +634,19 @@ packages:
 
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: false
+
+  /@headlessui/react@1.7.18(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4i5DOrzwN4qSgNsL4Si61VMkUcWbcSKueUV7sFhpHzQcSShdlHENE5+QBntMSRvHt8NyoFO2AGG8si9lq+w4zQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      '@tanstack/react-virtual': 3.2.0(react-dom@18.2.0)(react@18.2.0)
+      client-only: 0.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@hookform/resolvers@3.3.4(react-hook-form@7.51.0):
@@ -1846,9 +1862,24 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@tanstack/react-virtual@3.2.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-OEdMByf2hEfDa6XDbGlZN8qO6bTjlNKqjM3im9JG+u3mCL8jALy0T/67oDI001raUUPh1Bdmfn4ZvPOV5knpcg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/virtual-core': 3.2.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@tanstack/table-core@8.13.2:
     resolution: {integrity: sha512-/2saD1lWBUV6/uNAwrsg2tw58uvMJ07bO2F1IWMxjFRkJiXKQRuc3Oq2aufeobD3873+4oIM/DRySIw7+QsPPw==}
     engines: {node: '>=12'}
+    dev: false
+
+  /@tanstack/virtual-core@3.2.0:
+    resolution: {integrity: sha512-P5XgYoAw/vfW65byBbJQCw+cagdXDT/qH6wmABiLt4v4YBT2q2vqCOhihe+D1Nt325F/S/0Tkv6C5z0Lv+VBQQ==}
     dev: false
 
   /@ts-morph/common@0.19.0:
